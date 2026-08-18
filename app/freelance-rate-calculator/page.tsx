@@ -1,0 +1,2 @@
+import Link from 'next/link';
+export default function FreelanceRate(){return <main className="shell"><header className="header"><Link className="brand" href="/">Business Calculator Hub</Link></header><section className="hero"><p className="eyebrow">COMING NEXT</p><h1>Freelance Rate Calculator</h1><p className="lead">The advanced calculator for taxes, expenses, vacation and non-billable time is coming next.</p><Link className="primary" href="/salary-to-hourly-calculator">Back to Salary Calculator →</Link></section></main>}
