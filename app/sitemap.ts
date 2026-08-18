@@ -2,7 +2,7 @@ import type { MetadataRoute } from 'next';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const base = 'https://business-calculator-hub.vercel.app';
-  const routes = ['', '/salary-to-hourly-calculator', '/freelance-rate-calculator', '/profit-margin-calculator', '/break-even-calculator', '/ai-tools', '/ai-tools/creao', '/ai-tools/best-ai-tools-for-small-business', '/guides/how-to-calculate-profit-margin', '/guides/how-to-calculate-break-even-point', '/guides/freelance-hourly-rate', '/guides/salary-to-hourly-rate', '/privacy', '/terms', '/affiliate-disclosure'];
+  const routes = ['', '/salary-to-hourly-calculator', '/freelance-rate-calculator', '/profit-margin-calculator', '/break-even-calculator', '/guides', '/ai-tools', '/ai-tools/creao', '/ai-tools/best-ai-tools-for-small-business', '/guides/how-to-calculate-profit-margin', '/guides/how-to-calculate-break-even-point', '/guides/freelance-hourly-rate', '/guides/salary-to-hourly-rate', '/privacy', '/terms', '/affiliate-disclosure'];
   return routes.map((route) => ({
     url: `${base}${route}`,
     lastModified: new Date(),
