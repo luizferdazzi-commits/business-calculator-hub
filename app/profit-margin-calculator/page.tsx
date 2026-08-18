@@ -1,0 +1,13 @@
+'use client';
+
+import Link from 'next/link';
+import { useMemo, useState } from 'react';
+
+export default function ProfitMarginCalculator(){
+  const [price,setPrice]=useState('100');
+  const [cost,setCost]=useState('60');
+  const [expenses,setExpenses]=useState('5');
+  const result=useMemo(()=>{const p=Math.max(0,Number(price)||0);const c=Math.max(0,Number(cost)||0);const e=Math.max(0,Number(expenses)||0);const profit=p-c-e;const margin=p>0?(profit/p)*100:0;const markup=c>0?((p-c)/c)*100:0;return{profit,margin,markup};},[price,cost,expenses]);
+  const money=(n:number)=>n.toLocaleString('en-US',{style:'currency',currency:'USD'});
+  return <main className="shell"><header className="header"><Link className="brand" href="/">Business Calculator Hub</Link><Link href="/">All calculators</Link></header><section className="calculator"><p className="eyebrow">BUSINESS CALCULATOR</p><h1>Profit Margin Calculator</h1><p className="lead">Calculate profit per sale, profit margin and markup from selling price and costs.</p><div className="grid"><div className="panel"><label>Selling price<div className="inputWrap"><span>$</span><input inputMode="decimal" value={price} onChange={e=>setPrice(e.target.value)}/></div></label><label>Product or service cost<div className="inputWrap"><span>$</span><input inputMode="decimal" value={cost} onChange={e=>setCost(e.target.value)}/></div></label><label>Additional expenses<div className="inputWrap"><span>$</span><input inputMode="decimal" value={expenses} onChange={e=>setExpenses(e.target.value)}/></div></label></div><div className="result"><p className="resultLabel">Profit per sale</p><div className="big">{money(result.profit)}</div><div className="resultGrid"><div><span>Profit margin</span><strong>{result.margin.toFixed(2)}%</strong></div><div><span>Markup</span><strong>{result.markup.toFixed(2)}%</strong></div><div><span>Total cost</span><strong>{money((Number(cost)||0)+(Number(expenses)||0))}</strong></div></div><Link className="primary full" href="/break-even-calculator">Calculate break-even point →</Link></div></div></section><section className="content"><h2>How profit margin is calculated</h2><p>Profit margin is profit divided by selling price, multiplied by 100. This calculator also shows markup so you can compare pricing approaches.</p><h2>Why margin matters</h2><p>Margin helps you understand how much of each sale remains after direct and additional costs.</p></section></main>;
+}
