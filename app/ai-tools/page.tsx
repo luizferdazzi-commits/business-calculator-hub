@@ -1,0 +1,6 @@
+import type { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = { title: 'AI Tools for Small Business', description: 'Practical AI software guides for entrepreneurs, freelancers and small businesses.', alternates: { canonical: '/ai-tools' } };
+
+export default function AiTools() { return <main className="shell"><header className="header"><Link className="brand" href="/">Business Calculator Hub</Link><Link href="/">Calculators</Link></header><section className="hero"><p className="eyebrow">AI & SOFTWARE GUIDES</p><h1>AI tools for smarter business workflows.</h1><p className="lead">Independent, practical guides to help you evaluate software before you buy.</p></section><section className="cards"><article><span className="tag">AI AUTOMATION</span><h2>CREAO AI</h2><p>Explore potential business use cases, strengths and considerations.</p><Link href="/ai-tools/creao">Read the CREAO review →</Link></article><article><span className="tag">BUYER GUIDE</span><h2>Best AI Tools for Small Business</h2><p>A growing guide to AI tools across automation, productivity and business operations.</p><Link href="/ai-tools/best-ai-tools-for-small-business">View the guide →</Link></article></section></main>; }
