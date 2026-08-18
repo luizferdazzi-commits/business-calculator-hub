@@ -11,6 +11,9 @@ export const metadata: Metadata = {
   description: 'Free calculators for salary, freelance rates, profit margins and business decisions.',
   verification: {
     google: 'GvjIrfdNuogFaBAliRlEmlyk9Sjc3i0X7zOnSZQpaeI',
+    other: {
+      'impact-site-verification': '793175c9-c344-42fa-bf9e-4087374fd188',
+    },
   },
 };
 
