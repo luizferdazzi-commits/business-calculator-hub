@@ -5,6 +5,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 declare global { interface Window { gtag?: (...args: any[]) => void } }
 
+const RIIBASE_AFFILIATE_URL='https://riibase.pxf.io/4aMza3';
+
 export default function FreelanceRateCalculator(){
   const [income,setIncome]=useState('80000');
   const [expenses,setExpenses]=useState('12000');
@@ -42,6 +44,15 @@ export default function FreelanceRateCalculator(){
     return()=>window.clearTimeout(timer);
   },[income,expenses,taxRate,hours,weeks,billable,buffer,result.recommended]);
 
+  const trackAffiliateClick=()=>{
+    window.gtag?.('event','affiliate_click',{
+      partner:'riibase',
+      calculator_name:'freelance_rate',
+      page_path:window.location.pathname,
+      link_url:RIIBASE_AFFILIATE_URL
+    });
+  };
+
   const money=(n:number)=>n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
   const number=(n:number)=>n.toLocaleString('en-US',{maximumFractionDigits:0});
 
@@ -71,6 +82,17 @@ export default function FreelanceRateCalculator(){
           </div>
           <p style={{marginTop:24,color:'#666',lineHeight:1.6}}>Estimated annual revenue needed: <strong>{money(result.target)}</strong><br/>Estimated billable hours per year: <strong>{number(result.billableHours)}</strong></p>
           <Link className="primary full" href="/salary-to-hourly-calculator">Compare with salary pay →</Link>
+          <a
+            className="primary full"
+            href={RIIBASE_AFFILIATE_URL}
+            target="_blank"
+            rel="sponsored noopener noreferrer"
+            onClick={trackAffiliateClick}
+            style={{marginTop:12}}
+          >
+            Manage your freelance business with Riibase →
+          </a>
+          <p style={{marginTop:10,fontSize:12,color:'#777',lineHeight:1.5}}>Affiliate link. We may earn a commission if you sign up through this link, at no extra cost to you.</p>
         </div>
       </div>
     </section>
