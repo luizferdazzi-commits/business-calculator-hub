@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 declare global { interface Window { gtag?: (...args: any[]) => void } }
 
 const RIIBASE_AFFILIATE_URL='https://riibase.pxf.io/4aMza3';
+// Production CTA: Riibase affiliate offer for freelance calculator users.
 
 export default function FreelanceRateCalculator(){
   const [income,setIncome]=useState('80000');
