@@ -36,11 +36,15 @@ export default function FreelanceRateCalculator(){
   useEffect(()=>{
     if(firstRender.current){ firstRender.current=false; return; }
     const timer=window.setTimeout(()=>{
-      window.gtag?.('event','calculator_completed',{
+      const params={
         calculator_name:'freelance_rate',
         page_path:window.location.pathname,
-        recommended_rate:Number(result.recommended.toFixed(2))
-      });
+        recommended_rate:Number(result.recommended.toFixed(2)),
+        debug_mode:true,
+        transport_type:'beacon'
+      };
+      window.gtag?.('event','calculator_completed',params);
+      console.info('[GA4] calculator_completed',params);
     },900);
     return()=>window.clearTimeout(timer);
   },[income,expenses,taxRate,hours,weeks,billable,buffer,result.recommended]);
