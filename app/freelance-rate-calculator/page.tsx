@@ -1,7 +1,9 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+declare global { interface Window { gtag?: (...args: any[]) => void } }
 
 export default function FreelanceRateCalculator(){
   const [income,setIncome]=useState('80000');
@@ -11,6 +13,7 @@ export default function FreelanceRateCalculator(){
   const [weeks,setWeeks]=useState('48');
   const [billable,setBillable]=useState('65');
   const [buffer,setBuffer]=useState('15');
+  const firstRender=useRef(true);
 
   const result=useMemo(()=>{
     const desired=Math.max(0,Number(income)||0);
@@ -24,15 +27,20 @@ export default function FreelanceRateCalculator(){
     const annualBillableHours=hoursPerWeek*workingWeeks*billablePct;
     const minimum=preTaxRevenue/annualBillableHours;
     const recommended=minimum*(1+bufferPct);
-    return {
-      minimum,
-      recommended,
-      day:recommended*8,
-      month:recommended*annualBillableHours/12,
-      target:preTaxRevenue,
-      billableHours:annualBillableHours
-    };
+    return { minimum,recommended,day:recommended*8,month:recommended*annualBillableHours/12,target:preTaxRevenue,billableHours:annualBillableHours };
   },[income,expenses,taxRate,hours,weeks,billable,buffer]);
+
+  useEffect(()=>{
+    if(firstRender.current){ firstRender.current=false; return; }
+    const timer=window.setTimeout(()=>{
+      window.gtag?.('event','calculator_completed',{
+        calculator_name:'freelance_rate',
+        page_path:window.location.pathname,
+        recommended_rate:Number(result.recommended.toFixed(2))
+      });
+    },900);
+    return()=>window.clearTimeout(timer);
+  },[income,expenses,taxRate,hours,weeks,billable,buffer,result.recommended]);
 
   const money=(n:number)=>n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
   const number=(n:number)=>n.toLocaleString('en-US',{maximumFractionDigits:0});
@@ -45,7 +53,7 @@ export default function FreelanceRateCalculator(){
       <p className="lead">Estimate a sustainable freelance hourly rate based on your income goal, business costs, taxes and realistic billable time.</p>
       <div className="grid">
         <div className="panel">
-          <label>Desired take-home income<div className="inputWrap"><span>$</span><input inputMode="decimal" value={income} onChange={e=>setIncome(e.target.value)}/></div></label>
+          <label>Desired annual take-home income<div className="inputWrap"><span>$</span><input inputMode="decimal" value={income} onChange={e=>setIncome(e.target.value)}/></div></label>
           <label>Annual business expenses<div className="inputWrap"><span>$</span><input inputMode="decimal" value={expenses} onChange={e=>setExpenses(e.target.value)}/></div></label>
           <label>Estimated tax rate (%)<input inputMode="decimal" value={taxRate} onChange={e=>setTaxRate(e.target.value)}/></label>
           <label>Hours worked per week<input inputMode="decimal" value={hours} onChange={e=>setHours(e.target.value)}/></label>
@@ -68,7 +76,7 @@ export default function FreelanceRateCalculator(){
     </section>
     <section className="content">
       <h2>How this freelance rate is calculated</h2>
-      <p>The calculator starts with your desired take-home income, adds annual business expenses, adjusts for estimated taxes and divides the required revenue by your realistic billable hours. A buffer is then added to create a more sustainable recommended rate.</p>
+      <p>The calculator starts with your desired annual take-home income, adds annual business expenses, adjusts for estimated taxes and divides the required revenue by your realistic billable hours. A buffer is then added to create a more sustainable recommended rate.</p>
       <h2>Why billable time matters</h2>
       <p>Freelancers rarely bill every working hour. Sales, administration, meetings, proposals, accounting and downtime all reduce billable capacity. Using a realistic billable percentage helps avoid underpricing.</p>
       <h2>Use the minimum rate carefully</h2>
