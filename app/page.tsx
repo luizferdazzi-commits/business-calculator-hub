@@ -1,12 +1,74 @@
 import Link from 'next/link';
+import s from './home.module.css';
 
-const calculators = [
-  { href: '/salary-to-hourly-calculator', icon: '↔', title: 'Salary to Hourly', text: 'Convert annual salary into hourly, weekly, daily and monthly pay.' },
-  { href: '/freelance-rate-calculator', icon: '⌁', title: 'Freelance Rate', text: 'Estimate a sustainable hourly rate using income goals, expenses and billable time.' },
-  { href: '/profit-margin-calculator', icon: '%', title: 'Profit Margin', text: 'Calculate profit per sale, margin and markup with a clean, fast workflow.' },
-  { href: '/break-even-calculator', icon: '◎', title: 'Break-even', text: 'Estimate the sales volume needed to cover fixed and variable costs.' },
-  { href: '/roi-calculator', icon: '↗', title: 'ROI Calculator', text: 'Measure return on investment and net profit for a project, campaign or purchase.' },
-  { href: '/markup-calculator', icon: '+%', title: 'Markup Calculator', text: 'Turn product cost and target markup into a selling price and profit margin.' },
+const cards = [
+  { href:'/freelance-rate-calculator', icon:'$', title:'Freelance Rate Calculator', text:'Calculate your ideal hourly rate' },
+  { href:'/roi-calculator', icon:'↗', title:'ROI Calculator', text:'Measure the return on investment' },
+  { href:'/salary-to-hourly-calculator', icon:'◉', title:'Salary Calculator', text:'Calculate salary after taxes' },
+  { href:'/markup-calculator', icon:'▦', title:'Business Pricing Calculator', text:'Estimate selling prices and markup' },
+  { href:'/break-even-calculator', icon:'◔', title:'Break-Even Calculator', text:'Find your break-even point' },
 ];
 
-export default function Home() {return <main className="shell"><header className="header"><Link className="brand" href="/">Business Calculator Hub</Link><nav className="nav"><Link href="#calculators">Calculators</Link><Link href="/guides">Guides</Link><Link href="/ai-tools">AI Tools</Link><Link className="advertiseNav" href="/advertise">📣 Advertise with us</Link></nav></header><section className="hero heroHome"><div className="heroGlow" aria-hidden="true"/><div className="heroCopy"><p className="eyebrow">FREE BUSINESS TOOLS & GUIDES</p><h1>Make clearer decisions with numbers that actually help.</h1><p className="lead">Fast calculators, practical business guides and curated software insights for freelancers, entrepreneurs and small businesses.</p><div className="heroActions"><Link className="primary" href="#calculators">Explore free tools →</Link><Link className="secondary" href="/guides">Browse guides</Link></div><div className="trustRow"><span>✓ No signup</span><span>✓ Free calculators</span><span>✓ Mobile friendly</span><span>✓ Practical guides</span></div></div><div className="heroVisual"><div className="metricCard metricMain"><span className="metricLabel">Profit margin</span><strong>32.4%</strong><small>Simple, instant calculation</small></div><div className="metricCard metricFloat"><span className="metricLabel">ROI</span><strong>50%</strong><small>Measure return in seconds</small></div><div className="miniBadge">Built for real decisions</div></div></section><Link className="advertiseBanner" href="/advertise"><span className="advertiseMegaphone">📣</span><span className="advertiseBannerCopy"><small>FOR BRANDS & PARTNERS</small><strong>PUT YOUR BRAND IN FRONT OF HIGH-INTENT BUSINESS USERS</strong><em>Reach entrepreneurs, freelancers and business owners actively looking for tools, software and solutions.</em></span><span className="advertiseBannerButton">ADVERTISE WITH US →</span></Link><section className="valueStrip"><div><strong>6</strong><span>Free calculators</span></div><div><strong>4+</strong><span>Business guides</span></div><div><strong>AI</strong><span>Software research</span></div><div><strong>0</strong><span>Account required</span></div></section><section id="calculators" className="sectionBlock"><div className="sectionHeading"><div><p className="eyebrow">POPULAR TOOLS</p><h2>Start with a number you need.</h2></div><p>Each tool is designed to answer one business question quickly, without spreadsheets or signup forms.</p></div><div className="toolGrid">{calculators.map(tool=><Link className="toolCard" href={tool.href} key={tool.href}><span className="toolIcon">{tool.icon}</span><h3>{tool.title}</h3><p>{tool.text}</p><strong>Open calculator →</strong></Link>)}</div></section><section className="splitFeature"><div className="featureCopy"><p className="eyebrow">LEARN + CALCULATE</p><h2>Understand the formula, then test your own numbers.</h2><p>Our guides explain the reasoning behind the calculators, with examples and direct links back to the tools.</p><Link className="secondary dark" href="/guides">Explore business guides →</Link></div><div className="featureList"><Link href="/guides/how-to-calculate-profit-margin"><span>Profitability</span><strong>How to Calculate Profit Margin</strong><em>Read →</em></Link><Link href="/guides/how-to-calculate-break-even-point"><span>Planning</span><strong>How to Calculate Break-Even Point</strong><em>Read →</em></Link><Link href="/guides/freelance-hourly-rate"><span>Freelancing</span><strong>How to Calculate Your Freelance Rate</strong><em>Read →</em></Link><Link href="/guides/salary-to-hourly-rate"><span>Compensation</span><strong>Salary to Hourly Rate</strong><em>Read →</em></Link></div></section><section className="softwareShowcase"><div><p className="eyebrow">AI & SOFTWARE GUIDES</p><h2>Choose tools with less guesswork.</h2><p>Independent, practical software guides focused on real use cases, limitations and fit for small businesses.</p><div className="heroActions"><Link className="primary" href="/ai-tools">Explore AI tools →</Link><Link className="secondary" href="/ai-tools/creao">Read CREAO review</Link></div></div><div className="softwareCard"><span className="tag">FEATURED REVIEW</span><h3>CREAO AI</h3><p>Explore potential business use cases, strengths and considerations before deciding whether it fits your workflow.</p><Link href="/ai-tools/creao">Read the review →</Link></div></section><section className="sponsorCallout"><div><span className="sponsorLabel">FOR BRANDS & PARTNERS</span><h2>Want to reach business decision makers?</h2><p>We are accepting direct sponsorship and advertising proposals from relevant SaaS, fintech and business-service brands.</p></div><Link className="primary" href="/advertise">Advertise with us →</Link></section><section className="ctaPanel homeCta"><div><p className="eyebrow">SAVE TIME</p><h2>Bookmark the hub. Come back whenever the numbers get messy.</h2><p>Use one site for pricing, compensation, profitability, planning and software research.</p></div><Link className="primary" href="/guides">Explore all guides →</Link></section><footer className="footer"><span>© 2026 Business Calculator Hub</span><div><Link href="/advertise">Advertise with us</Link><Link href="/affiliate-disclosure">Affiliate Disclosure</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></div></footer></main>}
+export default function Home(){
+  return <main className={s.page}>
+    <div className={s.topbar}>🚀 Trusted by freelancers, entrepreneurs and small businesses worldwide ⭐ 100% Free Calculators</div>
+    <div className={s.wrap}>
+      <header className={s.header}>
+        <Link href="/" className={s.brand}><span className={s.logoBox}>▦</span><span>BUSINESS<br/><span className={s.brandBlue}>CALCULATOR HUB</span></span></Link>
+        <nav className={s.nav}>
+          <Link href="#calculators">Calculators⌄</Link>
+          <Link href="/guides">Guides</Link>
+          <Link href="/ai-tools">AI Tools <span className={s.new}>NEW</span></Link>
+          <Link href="/advertise" className={s.adNav}>📣 ADVERTISE WITH US</Link>
+        </nav>
+      </header>
+
+      <section className={s.hero}>
+        <div>
+          <span className={s.kicker}>FREE BUSINESS TOOLS & GUIDES</span>
+          <h1>Smart Calculators<br/>for <span className={s.blue}>Smarter<br/>Business Decisions</span></h1>
+          <p className={s.lead}>Powerful, free and easy-to-use calculators to help you plan, invest, grow and succeed.</p>
+          <div className={s.features}>
+            <div className={s.feature}><span className={s.featureIcon}>⚡</span><div><strong>100% Free</strong><span>Always free, no sign-up</span></div></div>
+            <div className={s.feature}><span className={s.featureIcon}>✓</span><div><strong>Accurate</strong><span>Reliable results you can trust</span></div></div>
+            <div className={s.feature}><span className={s.featureIcon}>◷</span><div><strong>Fast & Easy</strong><span>Get results in seconds</span></div></div>
+          </div>
+          <div className={s.actions}><Link className={s.primary} href="#calculators">Explore Calculators →</Link><Link className={s.secondary} href="/guides">Browse Guides</Link></div>
+        </div>
+
+        <div className={s.visual}>
+          <div className={s.calcCard}>
+            <h3>Profit Margin Calculator</h3>
+            <div className={s.field}><span>Revenue</span><div className={s.fakeInput}>$ 10,000</div></div>
+            <div className={s.field}><span>Costs</span><div className={s.fakeInput}>$ 6,500</div></div>
+            <div className={s.resultBox}><span>Profit Margin</span><strong>35.00%</strong><span className={s.healthy}>✓ Healthy Profit Margin</span></div>
+          </div>
+          <div className={s.chart}>
+            <div className={s.arrow}>↗</div>
+            <div className={s.bubble}>Make better<br/>decisions.<br/>Grow your<br/>business.</div>
+            <div className={s.bars}><span className={s.bar}/><span className={s.bar}/><span className={s.bar}/></div>
+            <div className={s.pie}/>
+          </div>
+        </div>
+      </section>
+
+      <Link href="/advertise" className={s.adBanner}>
+        <span className={s.megaphone}>📣</span>
+        <span className={s.adCopy}>
+          <small>PUT YOUR BRAND IN FRONT OF</small>
+          <strong>HIGH-INTENT BUSINESS USERS</strong>
+          <span>Reach entrepreneurs, freelancers and business owners actively looking for tools, software and solutions.</span>
+          <span className={s.adMeta}><span>🌐 Global Audience</span><span>🎯 High Engagement</span><span>🏷 Affordable Packages</span></span>
+        </span>
+        <span className={s.adButton}>ADVERTISE WITH US →<small>GET SEEN. GET CLICKS. GET RESULTS.</small></span>
+      </Link>
+
+      <section className={s.popular} id="calculators">
+        <div className={s.popularHead}><h2>⭐ Popular Calculators</h2><Link href="#calculators">View all calculators →</Link></div>
+        <div className={s.cards}>{cards.map(c=><Link href={c.href} className={s.card} key={c.href}><span className={s.cardIcon}>{c.icon}</span><span><strong>{c.title}</strong><span>{c.text}</span></span></Link>)}</div>
+      </section>
+
+      <footer className={s.footer}><span>© 2026 Business Calculator Hub</span><div><Link href="/advertise">Advertise with us</Link><Link href="/affiliate-disclosure">Affiliate Disclosure</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></div></footer>
+    </div>
+  </main>;
+}
