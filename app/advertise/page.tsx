@@ -57,8 +57,8 @@ export default function AdvertisePage() {
     </section>
 
     <section className="ctaPanel partnerApply" id="apply">
-      <div><p className="eyebrow">APPLICATIONS OPENING</p><h2>Prepare your founding partner application.</h2><p>Include your product URL, ideal customer, preferred calculators or guides, target countries, offer, landing page and whether you prefer fixed monthly, affiliate or hybrid pricing.</p><p className="applicationNote">The dedicated commercial contact channel is being finalized. No payment is required before fit and placement are approved.</p></div>
-      <Link className="secondary" href="/affiliate-disclosure">Review our disclosure policy →</Link>
+      <div><p className="eyebrow">FOUNDING PARTNER APPLICATIONS</p><h2>Tell us where your product creates value.</h2><p>Include your product URL, ideal customer, preferred calculators or guides, target countries, offer, landing page and whether you prefer fixed monthly, affiliate or hybrid pricing.</p><p className="applicationNote">Applications are reviewed for audience fit before any placement or payment. Contact: <a href="mailto:contato@assessorialf.com.br">contato@assessorialf.com.br</a></p></div>
+      <div className="heroActions"><a className="primary" href="mailto:contato@assessorialf.com.br?subject=Founding%20Partner%20Application%20-%20Business%20Calculator%20Hub&body=Product%20name%3A%0AProduct%20URL%3A%0AIdeal%20customer%3A%0ATarget%20countries%3A%0APreferred%20calculators%20or%20guides%3A%0AOffer%3A%0APreferred%20model%20(fixed%2C%20affiliate%2C%20or%20hybrid)%3A">Email your application →</a><Link className="secondary" href="/affiliate-disclosure">Disclosure policy</Link></div>
     </section>
 
     <footer className="footer"><span>© 2026 Business Calculator Hub</span><div><Link href="/advertise">Advertise</Link><Link href="/affiliate-disclosure">Affiliate Disclosure</Link><Link href="/privacy">Privacy</Link><Link href="/terms">Terms</Link></div></footer>
