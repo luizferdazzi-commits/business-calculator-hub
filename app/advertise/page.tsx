@@ -12,7 +12,7 @@ export default function AdvertisePage(){
       <p className="eyebrow">ADVERTISE WITH US</p>
       <h1>Reach people while they are making business decisions.</h1>
       <p className="lead">Business Calculator Hub helps freelancers, entrepreneurs and small businesses make pricing, compensation, profitability and investment decisions. We offer relevant, clearly labeled sponsorship opportunities for brands that serve this audience.</p>
-      <div className="heroActions"><a className="primary" href="#proposal">Request advertising information →</a><a className="secondary" href="mailto:businesscalculatorhub@gmail.com?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
+      <div className="heroActions"><a className="primary" href="#proposal">Request advertising information →</a><a className="secondary" href="mailto:contato@assessorialf.com.br?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
     </section>
 
     <section className="sectionBlock advertiseSection">
@@ -28,7 +28,7 @@ export default function AdvertisePage(){
 
     <section id="proposal" className="proposalPanel">
       <div><p className="eyebrow">REQUEST A MEDIA KIT / SEND A PROPOSAL</p><h2>Tell us what you want to promote.</h2><p>We are currently accepting direct advertising and sponsorship proposals. Early partners can request custom launch packages while the platform grows.</p></div>
-      <form className="proposalForm" action="https://formsubmit.co/businesscalculatorhub@gmail.com" method="POST">
+      <form className="proposalForm" action="https://formsubmit.co/contato@assessorialf.com.br" method="POST">
         <input type="hidden" name="_subject" value="New advertising proposal - Business Calculator Hub"/>
         <input type="hidden" name="_captcha" value="false"/>
         <input type="hidden" name="_template" value="table"/>
