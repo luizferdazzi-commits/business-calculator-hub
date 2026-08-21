@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import AffiliateTracker from './components/AffiliateTracker';
 import './globals.css';
+import './calculator-theme.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://business-calculator-hub.vercel.app'),
