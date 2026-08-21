@@ -1,8 +1,10 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
 import AffiliateTracker from './components/AffiliateTracker';
+import SiteHeader from './components/SiteHeader';
 import './globals.css';
 import './calculator-theme.css';
+import './site-header.css';
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://business-calculator-hub.vercel.app'),
@@ -23,6 +25,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        <SiteHeader />
         {children}
         <AffiliateTracker />
         <Script
