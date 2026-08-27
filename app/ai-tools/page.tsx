@@ -5,6 +5,7 @@ export const metadata:Metadata={title:'AI Tools, CRM & Software for Small Busine
 
 const software=[
 {href:'/ai-tools/wizstar',tag:'AI VIDEO & MARKETING',icon:'▶',title:'Wizstar AI Video',text:'Create marketing videos from product assets and localize existing video with AI-powered translation and lip sync.'},
+{href:'/ai-tools/base44',tag:'AI APP BUILDER',icon:'44',title:'Base44',text:'Explore an AI-assisted app builder for internal tools, workflow experiments and rapid business application prototyping.'},
 {href:'/ai-tools/riibase',tag:'FEATURED CRM',icon:'CRM',title:'Riibase CRM',text:'Explore Riibase as an all-in-one CRM option for customer management, sales workflows and automation.'},
 {href:'/ai-tools/best-crm-for-small-business',tag:'CRM BUYER GUIDE',icon:'◎',title:'Best CRM for Small Business',text:'Compare adoption, automation, integrations and cost before choosing a CRM platform.'},
 {href:'/ai-tools/creao',tag:'AI AUTOMATION',icon:'✦',title:'CREAO AI',text:'Explore potential business use cases, strengths and considerations for AI-powered workflows.'},
