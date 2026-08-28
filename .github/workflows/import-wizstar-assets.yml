@@ -30,6 +30,13 @@ jobs:
           gdown --folder "https://drive.google.com/drive/folders/1ak93hdIYzcN6GH_JfOe2FK3IwQkdyQ4j?usp=sharing" -O /tmp/wizstar-drive
           find /tmp/wizstar-drive -type f -maxdepth 4 -print
 
+      - name: Extract screenshot package
+        run: |
+          rm -rf /tmp/wizstar-screens
+          mkdir -p /tmp/wizstar-screens
+          unzip -o "/tmp/wizstar-drive/Wizstar scrennshot pack.zip" -d /tmp/wizstar-screens
+          find /tmp/wizstar-screens -type f -maxdepth 4 -print
+
       - name: Build high-quality optimized web assets
         run: |
           mkdir -p public/wizstar
@@ -37,7 +44,7 @@ jobs:
           from pathlib import Path
           from PIL import Image
 
-          root = Path("/tmp/wizstar-drive")
+          root = Path("/tmp/wizstar-screens")
           out = Path("public/wizstar")
           wanted = {
               "Home.png": "home.webp",
