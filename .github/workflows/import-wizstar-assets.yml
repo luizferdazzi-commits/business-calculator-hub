@@ -1,0 +1,97 @@
+name: Import Wizstar media assets
+
+on:
+  push:
+    paths:
+      - ".github/workflows/import-wizstar-assets.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  import-assets:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install image tooling
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install gdown pillow
+
+      - name: Download approved Wizstar media folder
+        run: |
+          rm -rf /tmp/wizstar-drive
+          mkdir -p /tmp/wizstar-drive
+          gdown --folder "https://drive.google.com/drive/folders/1ak93hdIYzcN6GH_JfOe2FK3IwQkdyQ4j?usp=sharing" -O /tmp/wizstar-drive
+          find /tmp/wizstar-drive -type f -maxdepth 4 -print
+
+      - name: Build high-quality optimized web assets
+        run: |
+          mkdir -p public/wizstar
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+
+          root = Path("/tmp/wizstar-drive")
+          out = Path("public/wizstar")
+          wanted = {
+              "Home.png": "home.webp",
+              "Product Video.png": "product-video.webp",
+              "AI Avatar.png": "ai-avatar.webp",
+              "Video Translation.png": "video-translation.webp",
+              "AI Image Generator.png": "ai-image-generator.webp",
+          }
+
+          found = {p.name: p for p in root.rglob("*") if p.is_file()}
+          missing = [name for name in wanted if name not in found]
+          if missing:
+              raise SystemExit(f"Missing expected Wizstar assets: {missing}")
+
+          for source_name, dest_name in wanted.items():
+              src = found[source_name]
+              dst = out / dest_name
+              with Image.open(src) as im:
+                  im = im.convert("RGB")
+                  im.thumbnail((1600, 1000), Image.Resampling.LANCZOS)
+                  im.save(dst, "WEBP", quality=90, method=6)
+                  print(f"{source_name} -> {dst} {im.size} {dst.stat().st_size} bytes")
+          PY
+
+      - name: Verify generated assets
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image
+          expected = [
+              "home.webp",
+              "product-video.webp",
+              "ai-avatar.webp",
+              "video-translation.webp",
+              "ai-image-generator.webp",
+          ]
+          for name in expected:
+              p = Path("public/wizstar") / name
+              if not p.exists() or p.stat().st_size < 20000:
+                  raise SystemExit(f"Invalid generated asset: {p}")
+              with Image.open(p) as im:
+                  if im.width < 1200 or im.height < 700:
+                      raise SystemExit(f"Asset resolution too low: {p} {im.size}")
+                  print(name, im.size, p.stat().st_size)
+          PY
+
+      - name: Commit refreshed assets
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/wizstar
+          if git diff --cached --quiet; then
+            echo "No asset changes detected."
+            exit 0
+          fi
+          git commit -m "Refresh Wizstar screenshots from approved source"
+          git push origin HEAD:main
