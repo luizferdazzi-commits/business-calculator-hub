@@ -15,6 +15,26 @@ export default function AdvertisePage(){
       <div className="heroActions"><a className="primary" href="#proposal">Request advertising information →</a><a className="secondary" href="mailto:contato@assessorialf.com.br?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
     </section>
 
+    <section className="trafficProof" aria-label="Audience snapshot">
+      <div className="trafficProofIntro">
+        <p className="eyebrow">VERIFIED AUDIENCE SNAPSHOT</p>
+        <h2>Early traffic, measured with Google Analytics.</h2>
+        <p>Launch-period data below is based on Google Analytics for Business Calculator Hub, covering August 18–28, 2026. We publish real measured numbers rather than projected audience claims.</p>
+      </div>
+      <div className="trafficMetrics">
+        <div><strong>281</strong><span>Page views</span></div>
+        <div><strong>98</strong><span>Sessions</span></div>
+        <div><strong>76</strong><span>Active users</span></div>
+        <div><strong>15+</strong><span>Countries reached</span></div>
+      </div>
+      <div className="trafficDetails">
+        <div><span>Leading market</span><strong>United States</strong><em>Largest measured audience market</em></div>
+        <div><span>High-intent usage</span><strong>Calculators + AI tools</strong><em>Visitors are reaching decision-focused pages</em></div>
+        <div><span>Measurement</span><strong>Google Analytics 4</strong><em>Audience reporting is continuously collected</em></div>
+      </div>
+      <p className="trafficNote">Early-stage launch snapshot • Updated August 28, 2026 • Figures will be refreshed as the audience grows. Detailed media-kit data is available to prospective partners on request.</p>
+    </section>
+
     <section className="sectionBlock advertiseSection">
       <div className="sectionHeading"><div><p className="eyebrow">AVAILABLE OPPORTUNITIES</p><h2>Contextual placements, not intrusive ads.</h2></div><p>We prioritize placements that match the user's current business question and keep sponsored content clearly identified.</p></div>
       <div className="guideGrid">
