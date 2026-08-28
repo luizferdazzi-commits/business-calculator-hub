@@ -10,7 +10,12 @@ const cards = [
   { href:'/payback-period-calculator', icon:'↻', title:'Payback Period Calculator', text:'Estimate investment recovery time' },
   { href:'/cac-ltv-calculator', icon:'×', title:'CAC & LTV Calculator', text:'Measure customer unit economics' },
   { href:'/runway-calculator', icon:'◷', title:'Business Runway Calculator', text:'Estimate how long cash will last' },
-  { href:'/selling-price-calculator', icon:'
+  { href:'/selling-price-calculator', icon:'$', title:'Selling Price Calculator', text:'Price from cost and target margin' },
+  { href:'/discount-margin-calculator', icon:'%', title:'Discount Margin Calculator', text:'Protect profit before discounting' },
+  { href:'/fixed-project-price-calculator', icon:'▣', title:'Fixed Project Price Calculator', text:'Turn hourly work into a fixed quote' },
+  { href:'/project-hourly-rate-calculator', icon:'⌁', title:'Project Hourly Rate Calculator', text:'Price multiple freelance projects' },
+  { href:'/self-employment-tax-calculator', icon:'Tax', title:'Self-Employment Tax Calculator', text:'Estimate US freelancer tax reserve' },
+  { href:'/freelance-vs-salary-calculator', icon:'↔', title:'Freelance vs Salary', text:'Compare compensation models' },
 ];
 
 export default function Home(){
