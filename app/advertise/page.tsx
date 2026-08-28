@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { audienceSnapshot as audience } from '../data/audience';
 
 export const metadata = {
   title: 'Advertise With Us',
@@ -15,24 +16,52 @@ export default function AdvertisePage(){
       <div className="heroActions"><a className="primary" href="#proposal">Request advertising information →</a><a className="secondary" href="mailto:contato@assessorialf.com.br?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
     </section>
 
-    <section className="trafficProof" aria-label="Audience snapshot">
+    <section className="trafficProof" aria-label="Audience and partner media kit">
       <div className="trafficProofIntro">
-        <p className="eyebrow">VERIFIED AUDIENCE SNAPSHOT</p>
-        <h2>Early traffic, measured with Google Analytics.</h2>
-        <p>Launch-period data below is based on Google Analytics for Business Calculator Hub, covering August 18–28, 2026. We publish real measured numbers rather than projected audience claims.</p>
+        <p className="eyebrow">LIVE AUDIENCE & PARTNER MEDIA KIT</p>
+        <h2>Real audience data, updated daily from Google Analytics.</h2>
+        <p>Business Calculator Hub is in its growth stage. We publish measured audience data so prospective partners can evaluate reach, momentum and content intent with transparent numbers.</p>
       </div>
+
+      <div className="trafficSectionTitle"><div><span>30-DAY AUDIENCE</span><strong>{audience.periodLabel}</strong></div><em>Updated {audience.updatedAt}</em></div>
       <div className="trafficMetrics">
-        <div><strong>281</strong><span>Page views</span></div>
-        <div><strong>98</strong><span>Sessions</span></div>
-        <div><strong>76</strong><span>Active users</span></div>
-        <div><strong>15+</strong><span>Countries reached</span></div>
+        <div><strong>{audience.monthly.activeUsers.toLocaleString('en-US')}</strong><span>Monthly active users</span></div>
+        <div><strong>{audience.monthly.sessions.toLocaleString('en-US')}</strong><span>Monthly sessions</span></div>
+        <div><strong>{audience.monthly.pageViews.toLocaleString('en-US')}</strong><span>Monthly page views</span></div>
+        <div><strong>{audience.monthly.countries}+</strong><span>Countries reached</span></div>
       </div>
-      <div className="trafficDetails">
-        <div><span>Leading market</span><strong>United States</strong><em>Largest measured audience market</em></div>
-        <div><span>High-intent usage</span><strong>Calculators + AI tools</strong><em>Visitors are reaching decision-focused pages</em></div>
-        <div><span>Measurement</span><strong>Google Analytics 4</strong><em>Audience reporting is continuously collected</em></div>
+
+      <div className="trafficSectionTitle trafficSectionTitleSecond"><div><span>7-DAY MOMENTUM</span><strong>Recent audience movement</strong></div><em>{audience.weekly.comparisonLabel}</em></div>
+      <div className="momentumGrid">
+        <div><span>Active users</span><strong>{audience.weekly.activeUsers.toLocaleString('en-US')}</strong><b className={audience.weekly.activeUsersGrowthPct>=0?'growthUp':'growthDown'}>{audience.weekly.activeUsersGrowthPct>=0?'+':''}{audience.weekly.activeUsersGrowthPct}%</b></div>
+        <div><span>Sessions</span><strong>{audience.weekly.sessions.toLocaleString('en-US')}</strong><b className={audience.weekly.sessionsGrowthPct>=0?'growthUp':'growthDown'}>{audience.weekly.sessionsGrowthPct>=0?'+':''}{audience.weekly.sessionsGrowthPct}%</b></div>
+        <div><span>Page views</span><strong>{audience.weekly.pageViews.toLocaleString('en-US')}</strong><b className={audience.weekly.pageViewsGrowthPct>=0?'growthUp':'growthDown'}>{audience.weekly.pageViewsGrowthPct>=0?'+':''}{audience.weekly.pageViewsGrowthPct}%</b></div>
       </div>
-      <p className="trafficNote">Early-stage launch snapshot • Updated August 28, 2026 • Figures will be refreshed as the audience grows. Detailed media-kit data is available to prospective partners on request.</p>
+
+      <div className="mediaKitGrid">
+        <div className="mediaKitCard">
+          <span className="tag">TOP MARKETS</span>
+          <h3>International reach</h3>
+          <div className="marketList">{audience.topMarkets.map(m=><div key={m.country}><span>{m.country}</span><strong>{m.share.toFixed(1)}%</strong><em>{m.users} users</em></div>)}</div>
+        </div>
+        <div className="mediaKitCard">
+          <span className="tag">MOST VISITED DECISION CONTENT</span>
+          <h3>What visitors are researching</h3>
+          <div className="contentList">{audience.topContent.map(p=><Link href={p.path} key={p.path}><span>{p.label}</span><strong>{p.views} views</strong></Link>)}</div>
+        </div>
+      </div>
+
+      <div className="intentPanel">
+        <div><span className="tag">AUDIENCE INTENT</span><h3>Topics our visitors are actively exploring</h3><p>These themes are based on the business content and tools being visited, not inferred personal demographics.</p></div>
+        <div className="intentTags">{audience.intentTopics.map(t=><span key={t}>{t}</span>)}</div>
+      </div>
+
+      <div className="earlyPartnerPanel">
+        <div><span className="tag">EARLY PARTNER OPPORTUNITY</span><h3>Join while the platform is scaling.</h3><p>Early partners can request preferential launch packages and contextual placements while our international organic audience and long-tail calculator library continue to expand.</p></div>
+        <a className="primary" href="#proposal">Request an early partner package →</a>
+      </div>
+
+      <p className="trafficNote">Source: {audience.source}. Audience figures are measured, not projected. Data is refreshed daily and may change as Google Analytics processes traffic. Detailed media-kit data can be shared with qualified prospective partners.</p>
     </section>
 
     <section className="sectionBlock advertiseSection">
