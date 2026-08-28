@@ -1,0 +1,128 @@
+name: Daily Site QA
+
+on:
+  schedule:
+    - cron: '20 10 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install QA dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install requests beautifulsoup4
+
+      - name: Crawl sitemap and validate pages/assets
+        env:
+          BASE_URL: https://business-calculator-hub.vercel.app
+        run: |
+          python - <<'PY'
+          import os, sys, time
+          from urllib.parse import urljoin, urlparse
+          import requests
+          from bs4 import BeautifulSoup
+          import xml.etree.ElementTree as ET
+
+          base = os.environ["BASE_URL"].rstrip("/")
+          session = requests.Session()
+          # This crawler does not execute JavaScript, so GA4 page_view events are not generated.
+          session.headers.update({
+              "User-Agent": "BCH-QA-Bot/1.0 (+internal quality assurance; no analytics)"
+          })
+
+          def get(url):
+              try:
+                  r = session.get(url, timeout=20, allow_redirects=True)
+                  return r
+              except Exception as e:
+                  return e
+
+          sitemap_url = base + "/sitemap.xml"
+          sm = get(sitemap_url)
+          if isinstance(sm, Exception) or sm.status_code != 200:
+              print(f"FAIL sitemap {sitemap_url}: {sm}")
+              sys.exit(1)
+
+          root = ET.fromstring(sm.text)
+          ns = {"sm": "http://www.sitemaps.org/schemas/sitemap/0.9"}
+          urls = [el.text.strip() for el in root.findall(".//sm:loc", ns) if el.text]
+          if not urls:
+              print("FAIL: sitemap contains no URLs")
+              sys.exit(1)
+
+          failures = []
+          checked_assets = set()
+          checked_links = set()
+
+          for i, url in enumerate(urls, 1):
+              r = get(url)
+              if isinstance(r, Exception):
+                  failures.append((url, "request error", str(r)))
+                  continue
+              print(f"[{i}/{len(urls)}] {r.status_code} {url}")
+              if r.status_code >= 400:
+                  failures.append((url, f"HTTP {r.status_code}", "page"))
+                  continue
+              ctype = r.headers.get("content-type", "")
+              if "text/html" not in ctype:
+                  continue
+
+              soup = BeautifulSoup(r.text, "html.parser")
+
+              for tag, attr in [("img","src"),("script","src"),("link","href")]:
+                  for node in soup.find_all(tag):
+                      raw = node.get(attr)
+                      if not raw or raw.startswith(("data:","mailto:","tel:","#")):
+                          continue
+                      absolute = urljoin(url, raw)
+                      parsed = urlparse(absolute)
+                      if parsed.netloc != urlparse(base).netloc:
+                          continue
+                      if tag == "link" and node.get("rel") and not any(x in node.get("rel") for x in ["stylesheet","icon","preload"]):
+                          continue
+                      if absolute in checked_assets:
+                          continue
+                      checked_assets.add(absolute)
+                      ar = get(absolute)
+                      if isinstance(ar, Exception):
+                          failures.append((absolute, "request error", f"asset from {url}"))
+                      elif ar.status_code >= 400:
+                          failures.append((absolute, f"HTTP {ar.status_code}", f"asset from {url}"))
+
+              for a in soup.find_all("a", href=True):
+                  href = a.get("href")
+                  if href.startswith(("mailto:","tel:","javascript:","#")):
+                      continue
+                  absolute = urljoin(url, href.split("#")[0])
+                  parsed = urlparse(absolute)
+                  if parsed.netloc != urlparse(base).netloc:
+                      continue
+                  if absolute in checked_links:
+                      continue
+                  checked_links.add(absolute)
+                  lr = get(absolute)
+                  if isinstance(lr, Exception):
+                      failures.append((absolute, "request error", f"link from {url}"))
+                  elif lr.status_code >= 400:
+                      failures.append((absolute, f"HTTP {lr.status_code}", f"link from {url}"))
+
+              time.sleep(0.05)
+
+          print("\n=== QA SUMMARY ===")
+          print(f"Sitemap URLs: {len(urls)}")
+          print(f"Internal links checked: {len(checked_links)}")
+          print(f"Assets checked: {len(checked_assets)}")
+          if failures:
+              print(f"Failures: {len(failures)}")
+              for f in failures[:100]:
+                  print("FAIL", *f)
+              sys.exit(1)
+
+          print("Failures: 0")
+          print("PASS: all sitemap pages and checked internal assets/links are healthy.")
+          PY
