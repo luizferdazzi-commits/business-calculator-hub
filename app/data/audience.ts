@@ -1,0 +1,35 @@
+export const audienceSnapshot = {
+  source: 'Google Analytics 4',
+  updatedAt: 'August 28, 2026',
+  periodLabel: 'Last 30 days',
+  monthly: {
+    activeUsers: 76,
+    sessions: 98,
+    pageViews: 281,
+    countries: 17,
+  },
+  weekly: {
+    activeUsers: 61,
+    sessions: 71,
+    pageViews: 139,
+    activeUsersGrowthPct: 259,
+    sessionsGrowthPct: 163,
+    pageViewsGrowthPct: -2,
+    comparisonLabel: 'vs. previous 7 days',
+  },
+  topMarkets: [
+    { country: 'United States', share: 38.2, users: 29 },
+    { country: 'Canada', share: 9.2, users: 7 },
+    { country: 'United Kingdom', share: 6.6, users: 5 },
+    { country: 'Australia', share: 5.3, users: 4 },
+    { country: 'China', share: 5.3, users: 4 },
+  ],
+  topContent: [
+    { label: 'Freelance Rate Calculator', path: '/freelance-rate-calculator', views: 43 },
+    { label: 'Salary to Hourly Calculator', path: '/salary-to-hourly-calculator', views: 21 },
+    { label: 'Business Guides', path: '/guides', views: 13 },
+    { label: 'AI Tools Hub', path: '/ai-tools', views: 11 },
+    { label: 'Wizstar Review', path: '/ai-tools/wizstar', views: 7 },
+  ],
+  intentTopics: ['Freelancing', 'Pricing', 'Profitability', 'Compensation', 'AI Tools', 'SaaS', 'Business Planning'],
+};
