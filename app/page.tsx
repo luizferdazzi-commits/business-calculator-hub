@@ -26,7 +26,7 @@ export default function Home(){
         <Link href="/" className={s.brand}><span className={s.logoBox}>▦</span><span>BUSINESS<br/><span className={s.brandBlue}>CALCULATOR HUB</span></span></Link>
         <nav className={s.nav}>
           <Link href="#calculators">Calculators⌄</Link>
-          <Link href="/guides">Guides</Link>
+          <Link href="/guides">Guides</Link>\n          <Link href="/pt-br">🇧🇷 Português</Link>
           <Link href="/ai-tools">AI Tools <span className={s.new}>NEW</span></Link>
           <Link href="/advertise" className={s.adNav}>📣 ADVERTISE WITH US</Link>
         </nav>
