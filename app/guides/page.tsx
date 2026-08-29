@@ -1,6 +1,18 @@
 import type { Metadata } from 'next';import Link from 'next/link';
 export const metadata:Metadata={title:'Business Guides, Freelance Tips & Financial Formulas',description:'Practical guides for freelance pricing, profitability, compensation, investment and business planning.',alternates:{canonical:'/guides'}};
 const guides=[
+{href:'/guides/45-an-hour-is-how-much-a-year',tag:'Pay Breakdown',icon:'$45',title:'$45 an Hour Is How Much a Year?',text:'Annual, monthly, weekly and daily pay breakdown.'},
+{href:'/guides/60-an-hour-is-how-much-a-year',tag:'Pay Breakdown',icon:'$60',title:'$60 an Hour Is How Much a Year?',text:'Annual, monthly, weekly and daily pay breakdown.'},
+{href:'/guides/80-an-hour-is-how-much-a-year',tag:'Pay Breakdown',icon:'$80',title:'$80 an Hour Is How Much a Year?',text:'Annual, monthly, weekly and daily pay breakdown.'},
+{href:'/guides/90-an-hour-is-how-much-a-year',tag:'Pay Breakdown',icon:'$90',title:'$90 an Hour Is How Much a Year?',text:'Annual, monthly, weekly and daily pay breakdown.'},
+{href:'/guides/125-an-hour-is-how-much-a-year',tag:'Pay Breakdown',icon:'$125',title:'$125 an Hour Is How Much a Year?',text:'Annual, monthly, weekly and daily pay breakdown.'},
+{href:'/guides/150-an-hour-is-how-much-a-year',tag:'Pay Breakdown',icon:'$150',title:'$150 an Hour Is How Much a Year?',text:'Annual, monthly, weekly and daily pay breakdown.'},
+{href:'/guides/60k-salary-is-how-much-an-hour',tag:'Salary Breakdown',icon:'$60K',title:'$60K Salary Is How Much an Hour?',text:'Convert annual salary into an hourly, monthly and weekly equivalent.'},
+{href:'/guides/75k-salary-is-how-much-an-hour',tag:'Salary Breakdown',icon:'$75K',title:'$75K Salary Is How Much an Hour?',text:'Convert annual salary into an hourly, monthly and weekly equivalent.'},
+{href:'/guides/100k-salary-is-how-much-an-hour',tag:'Salary Breakdown',icon:'$100K',title:'$100K Salary Is How Much an Hour?',text:'Convert annual salary into an hourly, monthly and weekly equivalent.'},
+{href:'/guides/120k-salary-is-how-much-an-hour',tag:'Salary Breakdown',icon:'$120K',title:'$120K Salary Is How Much an Hour?',text:'Convert annual salary into an hourly, monthly and weekly equivalent.'},
+{href:'/guides/150k-salary-is-how-much-an-hour',tag:'Salary Breakdown',icon:'$150K',title:'$150K Salary Is How Much an Hour?',text:'Convert annual salary into an hourly, monthly and weekly equivalent.'},
+{href:'/guides/200k-salary-is-how-much-an-hour',tag:'Salary Breakdown',icon:'$200K',title:'$200K Salary Is How Much an Hour?',text:'Convert annual salary into an hourly, monthly and weekly equivalent.'},
 {href:'/guides/preply',tag:'Partner',icon:'🌐',title:'Preply for Online Language Learning',text:'Explore personalized one-to-one language lessons for professionals and international work.'},
 {href:'/guides/how-much-should-i-charge-as-a-freelancer',tag:'Freelancing',icon:'💼',title:'How Much Should I Charge as a Freelancer?',text:'Set a sustainable baseline using income goals, expenses and billable hours.'},
 {href:'/guides/freelance-hourly-rate',tag:'Freelancing',icon:'⌁',title:'How to Calculate Your Freelance Hourly Rate',text:'Build a sustainable rate around realistic billable hours.'},
