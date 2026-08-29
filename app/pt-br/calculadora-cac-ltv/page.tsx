@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../cac-ltv-calculator/page';export const metadata:Metadata={title:'calculadora cac ltv | Brasil',alternates:{canonical:'/pt-br/calculadora-cac-ltv',languages:{'en':'/calculadora-cac-ltv','pt-BR':'/pt-br/calculadora-cac-ltv'}}};export default Page;
