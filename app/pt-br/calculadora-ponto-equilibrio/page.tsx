@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../break-even-calculator/page';export const metadata:Metadata={title:'calculadora ponto equilibrio | Brasil',alternates:{canonical:'/pt-br/calculadora-ponto-equilibrio',languages:{'en':'/calculadora-ponto-equilibrio','pt-BR':'/pt-br/calculadora-ponto-equilibrio'}}};export default Page;
