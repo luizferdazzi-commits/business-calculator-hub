@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../markup-calculator/page';export const metadata:Metadata={title:'calculadora markup | Brasil',alternates:{canonical:'/pt-br/calculadora-markup',languages:{'en':'/calculadora-markup','pt-BR':'/pt-br/calculadora-markup'}}};export default Page;
