@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../roi-calculator/page';export const metadata:Metadata={title:'calculadora roi | Brasil',alternates:{canonical:'/pt-br/calculadora-roi',languages:{'en':'/calculadora-roi','pt-BR':'/pt-br/calculadora-roi'}}};export default Page;
