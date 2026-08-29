@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../selling-price-calculator/page';export const metadata:Metadata={title:'calculadora preco venda | Brasil',alternates:{canonical:'/pt-br/calculadora-preco-venda',languages:{'en':'/calculadora-preco-venda','pt-BR':'/pt-br/calculadora-preco-venda'}}};export default Page;
