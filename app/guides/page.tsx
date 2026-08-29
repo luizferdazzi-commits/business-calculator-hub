@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';import Link from 'next/link';
 export const metadata:Metadata={title:'Business Guides, Freelance Tips & Financial Formulas',description:'Practical guides for freelance pricing, profitability, compensation, investment and business planning.',alternates:{canonical:'/guides'}};
 const guides=[
+{href:'/guides/preply',tag:'Partner',icon:'🌐',title:'Preply for Online Language Learning',text:'Explore personalized one-to-one language lessons for professionals and international work.'},
 {href:'/guides/how-much-should-i-charge-as-a-freelancer',tag:'Freelancing',icon:'💼',title:'How Much Should I Charge as a Freelancer?',text:'Set a sustainable baseline using income goals, expenses and billable hours.'},
 {href:'/guides/freelance-hourly-rate',tag:'Freelancing',icon:'⌁',title:'How to Calculate Your Freelance Hourly Rate',text:'Build a sustainable rate around realistic billable hours.'},
 {href:'/guides/pricing-multiple-freelance-projects',tag:'Freelancing',icon:'Multi',title:'Pricing Multiple Freelance Projects',text:'Set a sustainable rate while client projects overlap.'},
