@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../freelance-rate-calculator/page';export const metadata:Metadata={title:'calculadora freelancer | Brasil',alternates:{canonical:'/pt-br/calculadora-freelancer',languages:{'en':'/calculadora-freelancer','pt-BR':'/pt-br/calculadora-freelancer'}}};export default Page;
