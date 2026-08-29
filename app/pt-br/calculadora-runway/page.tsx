@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../runway-calculator/page';export const metadata:Metadata={title:'calculadora runway | Brasil',alternates:{canonical:'/pt-br/calculadora-runway',languages:{'en':'/calculadora-runway','pt-BR':'/pt-br/calculadora-runway'}}};export default Page;
