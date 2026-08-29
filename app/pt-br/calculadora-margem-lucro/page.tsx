@@ -1,0 +1,1 @@
+import type { Metadata } from 'next';import Page from '../../profit-margin-calculator/page';export const metadata:Metadata={title:'calculadora margem lucro | Brasil',alternates:{canonical:'/pt-br/calculadora-margem-lucro',languages:{'en':'/calculadora-margem-lucro','pt-BR':'/pt-br/calculadora-margem-lucro'}}};export default Page;
