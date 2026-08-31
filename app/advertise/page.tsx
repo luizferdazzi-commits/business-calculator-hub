@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { audienceSnapshot as audience } from '../data/audience';
+import {getAudienceData} from '../lib/ga4';
 import AdvertisingPlans from '../components/AdvertisingPlans';
 
 export const metadata = {
@@ -7,7 +7,8 @@ export const metadata = {
   description: 'Reach freelancers, entrepreneurs and small-business decision makers through Business Calculator Hub.',
 };
 
-export default function AdvertisePage(){
+export default async function AdvertisePage(){
+  const audience=await getAudienceData();
   return <main className="shell">
     <header className="header"><Link className="brand" href="/">Business Calculator Hub</Link><nav className="nav"><Link href="/">Calculators</Link><Link href="/guides">Guides</Link><Link href="/ai-tools">AI Tools</Link></nav></header>
     <section className="hero heroCompact advertiseHero">
@@ -21,8 +22,8 @@ export default function AdvertisePage(){
     <section className="trafficProof" aria-label="Audience and partner media kit">
       <div className="trafficProofIntro">
         <p className="eyebrow">LIVE AUDIENCE & PARTNER MEDIA KIT</p>
-        <h2>Real audience data, updated daily from Google Analytics.</h2>
-        <p>Business Calculator Hub is in its growth stage. We publish measured audience data so prospective partners can evaluate reach, momentum and content intent with transparent numbers.</p>
+        <h2>Real audience data, synchronized with Google Analytics.</h2>
+        <p>Business Calculator Hub is in its growth stage. We publish measured audience data so prospective partners can evaluate reach, momentum and content intent with transparent numbers.</p>{audience.liveNow!==null&&<p className="liveNow"><span>●</span> {audience.liveNow} active users in the last 30 minutes</p>}
       </div>
 
       <div className="trafficSectionTitle"><div><span>30-DAY AUDIENCE</span><strong>{audience.periodLabel}</strong></div><em>Updated {audience.updatedAt}</em></div>
@@ -63,7 +64,7 @@ export default function AdvertisePage(){
         <a className="primary" href="#proposal">Request an early partner package →</a>
       </div>
 
-      <p className="trafficNote">Source: {audience.source}. Audience figures are measured, not projected. Data is refreshed daily and may change as Google Analytics processes traffic. Detailed media-kit data can be shared with qualified prospective partners.</p>
+      <p className="trafficNote">Source: {audience.source}. Audience figures are measured, not projected. Historical metrics refresh automatically every 15 minutes; realtime activity refreshes every minute and may change as Google Analytics processes traffic. Detailed media-kit data can be shared with qualified prospective partners.</p>
     </section>
 
     
