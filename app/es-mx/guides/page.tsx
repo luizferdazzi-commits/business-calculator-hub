@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';import CountryGuides from '../../components/CountryGuides';export const metadata:Metadata={title:'Guías de negocio para México',alternates:{canonical:'/es-mx/guides'}};export default function Page(){return <CountryGuides market="es-mx"/>}

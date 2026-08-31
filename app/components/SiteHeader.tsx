@@ -31,19 +31,19 @@ export default function SiteHeader(){
   const base=key?'/'+key:'';
   useEffect(()=>{document.documentElement.lang=d.lang},[d.lang]);
   const advertise=key==='pt-br'?'/pt-br/anuncie':key?base+'/advertise':'/advertise';
-  const guides=key==='pt-br'?'/pt-br/guias':'/guides';
+  const guides=key==='pt-br'?'/pt-br/guias':key?base+'/guides':'/guides';
   return <>
     <div className="siteTrustBar">{d.trust} <span>{d.free}</span></div>
     <header className="siteHeader">
       <Link className="siteLogo" href={base||'/'} aria-label="Business Calculator Hub"><span className="siteLogoIcon">▦</span><span><strong>BUSINESS</strong><em>CALCULATOR HUB</em></span></Link>
       <nav className="siteNav" aria-label="Main navigation">
-        <Link href={(base||'')+'/#tools'}>{d.calc}</Link>
+        <Link href={(base||'')+'/#calculators'}>{d.calc}</Link>
         <Link href={guides}>{d.guides}</Link>
         {!key&&<Link href="/ai-tools">AI Tools <small>NEW</small></Link>}
         <Link href={advertise}>{d.advertise}</Link>
         <div className="siteNavDropdown"><button type="button" aria-label="Choose market">🌐 {key?markets.find(m=>m[0]===base)?.[1].replace(/^.. /,''): 'Markets'} ▾</button><div className="siteNavMenu siteMarketMenu">{markets.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}</div></div>
       </nav>
-      <div className="siteHeaderActions"><Link className="siteAdvertise" href={advertise}>{d.adCta}</Link><Link className="siteAllTools" href={(base||'')+'/#tools'}>{d.all}</Link></div>
+      <div className="siteHeaderActions"><Link className="siteAdvertise" href={advertise}>{d.adCta}</Link><Link className="siteAllTools" href={(base||'')+'/#calculators'}>{d.all}</Link></div>
     </header>
   </>;
 }

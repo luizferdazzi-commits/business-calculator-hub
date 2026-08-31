@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';import CountryGuides from '../../components/CountryGuides';export const metadata:Metadata={title:'日本向けビジネスガイド',alternates:{canonical:'/ja-jp/guides'}};export default function Page(){return <CountryGuides market="ja-jp"/>}
