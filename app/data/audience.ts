@@ -1,3 +1,4 @@
+// GA4 live credentials configured in Vercel; this file remains the safe fallback snapshot.
 export const audienceSnapshot = {
   source: 'Google Analytics 4',
   updatedAt: 'August 31, 2026',
