@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { audienceSnapshot as audience } from '../data/audience';
+import AdvertisingPlans from '../components/AdvertisingPlans';
 
 export const metadata = {
   title: 'Advertise With Us',
@@ -63,6 +64,8 @@ export default function AdvertisePage(){
 
       <p className="trafficNote">Source: {audience.source}. Audience figures are measured, not projected. Data is refreshed daily and may change as Google Analytics processes traffic. Detailed media-kit data can be shared with qualified prospective partners.</p>
     </section>
+
+    <AdvertisingPlans lang="en" contact="#proposal"/>
 
     <section className="sectionBlock advertiseSection">
       <div className="sectionHeading"><div><p className="eyebrow">AVAILABLE OPPORTUNITIES</p><h2>Contextual placements, not intrusive ads.</h2></div><p>We prioritize placements that match the user's current business question and keep sponsored content clearly identified.</p></div>
