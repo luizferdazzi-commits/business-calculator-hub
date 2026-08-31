@@ -14,8 +14,9 @@ export default function AdvertisePage(){
       <p className="eyebrow">ADVERTISE WITH US</p>
       <h1>Reach people while they are making business decisions.</h1>
       <p className="lead">Business Calculator Hub helps freelancers, entrepreneurs and small businesses make pricing, compensation, profitability and investment decisions. We offer relevant, clearly labeled sponsorship opportunities for brands that serve this audience.</p>
-      <div className="heroActions"><a className="primary" href="#proposal">Request advertising information →</a><a className="secondary" href="mailto:contato@assessorialf.com.br?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
+      <div className="heroActions"><a className="primary" href="#plans">View plans & placements ↓</a><a className="secondary" href="mailto:contato@assessorialf.com.br?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
     </section>
+    <AdvertisingPlans lang="en" contact="#proposal"/>
 
     <section className="trafficProof" aria-label="Audience and partner media kit">
       <div className="trafficProofIntro">
@@ -65,7 +66,7 @@ export default function AdvertisePage(){
       <p className="trafficNote">Source: {audience.source}. Audience figures are measured, not projected. Data is refreshed daily and may change as Google Analytics processes traffic. Detailed media-kit data can be shared with qualified prospective partners.</p>
     </section>
 
-    <AdvertisingPlans lang="en" contact="#proposal"/>
+    
 
     <section className="sectionBlock advertiseSection">
       <div className="sectionHeading"><div><p className="eyebrow">AVAILABLE OPPORTUNITIES</p><h2>Contextual placements, not intrusive ads.</h2></div><p>We prioritize placements that match the user's current business question and keep sponsored content clearly identified.</p></div>
