@@ -1,7 +1,7 @@
 'use client';
 import Link from 'next/link';
 import {usePathname} from 'next/navigation';
-import {useEffect} from 'react';
+import {useEffect,useState} from 'react';
 
 const markets=[
   ['/','🌐 Global'],
@@ -26,10 +26,11 @@ const localeData={
 
 export default function SiteHeader(){
   const path=usePathname()||'/';
+  const [marketOpen,setMarketOpen]=useState(false);
   const key=(Object.keys(localeData).find(k=>path.startsWith('/'+k))||'') as keyof typeof localeData|'';
   const d=key?localeData[key]:{lang:'en',trust:'🚀 Trusted by freelancers, entrepreneurs and small businesses worldwide',free:'★ 100% Free Calculators',calc:'Calculators',guides:'Guides',advertise:'Advertise',adCta:'📣 ADVERTISE WITH US',all:'All tools →'};
   const base=key?'/'+key:'';
-  useEffect(()=>{document.documentElement.lang=d.lang},[d.lang]);
+  useEffect(()=>{document.documentElement.lang=d.lang;setMarketOpen(false)},[d.lang,path]);
   const advertise=key==='pt-br'?'/pt-br/anuncie':key?base+'/advertise':'/advertise';
   const guides=key==='pt-br'?'/pt-br/guias':key?base+'/guides':'/guides';
   return <>
@@ -41,7 +42,7 @@ export default function SiteHeader(){
         <Link href={guides}>{d.guides}</Link>
         {!key&&<Link href="/ai-tools">AI Tools <small>NEW</small></Link>}
         <Link href={advertise}>{d.advertise}</Link>
-        <div className="siteNavDropdown"><button type="button" aria-label="Choose market">🌐 {key?markets.find(m=>m[0]===base)?.[1].replace(/^.. /,''): 'Markets'} ▾</button><div className="siteNavMenu siteMarketMenu">{markets.map(([href,label])=><Link key={href} href={href}>{label}</Link>)}</div></div>
+        <div className={"siteNavDropdown"+(marketOpen?" open":"")}><button type="button" aria-label="Choose market" aria-expanded={marketOpen} onClick={()=>setMarketOpen(v=>!v)}>🌐 {key?markets.find(m=>m[0]===base)?.[1].replace(/^.. /,''): 'Markets'} ▾</button><div className="siteNavMenu siteMarketMenu">{markets.map(([href,label])=><Link key={href} href={href} onClick={()=>setMarketOpen(false)}>{label}</Link>)}</div></div>
       </nav>
       <div className="siteHeaderActions"><Link className="siteAdvertise" href={advertise}>{d.adCta}</Link><Link className="siteAllTools" href={(base||'')+'/#calculators'}>{d.all}</Link></div>
     </header>
