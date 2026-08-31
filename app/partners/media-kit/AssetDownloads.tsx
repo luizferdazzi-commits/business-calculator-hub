@@ -1,7 +1,7 @@
 'use client';
 import {useMemo} from 'react';
 
-type Lang='en'|'pt';
+type Lang='en'|'pt'|'es'|'de'|'ja';
 type BannerSize='1200x628'|'728x90'|'300x250'|'1080x1080';
 type LogoVariant='full-color'|'full-dark'|'icon-color'|'icon-dark';
 
@@ -24,10 +24,7 @@ function logoSvg(v:LogoVariant){
 
 function bannerSvg(lang:Lang,size:BannerSize){
   const [W,H]=size.split('x').map(Number);
-  const pt=lang==='pt';
-  const headline=pt?'Calculadoras gratuitas para decisões mais inteligentes.':'Free business calculators for smarter decisions.';
-  const sub=pt?'Ferramentas para MEI, PJ, trabalho e pequenos negócios.':'Practical tools for freelancers, entrepreneurs and small businesses.';
-  const cta=pt?'Acesse gratuitamente':'Explore free tools';
+  const copy:any={en:['Free business calculators for smarter decisions.','Practical tools for freelancers, entrepreneurs and small businesses.','Explore free tools'],pt:['Calculadoras gratuitas para decisões mais inteligentes.','Ferramentas para MEI, PJ, trabalho e pequenos negócios.','Acesse gratuitamente'],es:['Calculadoras gratuitas para decisiones más inteligentes.','Herramientas prácticas para freelancers, emprendedores y pequeñas empresas.','Explorar herramientas'],de:['Kostenlose Business-Rechner für bessere Entscheidungen.','Praktische Tools für Freelancer, Gründer und kleine Unternehmen.','Kostenlose Rechner öffnen'],ja:['より良い意思決定のための無料ビジネス計算ツール。','フリーランス・起業家・中小企業向け実用ツール。','無料ツールを見る']}[lang];const [headline,sub,cta]=copy;
   const fs=Math.max(18,Math.round(H*.115)), subFs=Math.max(11,Math.round(H*.052)), brandFs=Math.max(12,Math.round(H*.065));
   const icon=Math.max(34,Math.round(Math.min(W,H)*.16));
   const ix=Math.round(W*.05), iy=Math.round(H*.08), tx=ix+icon+Math.round(W*.015);
@@ -56,7 +53,7 @@ export default function MediaKitAssets({lang}:{lang:Lang}){
  ] as [LogoVariant,string][],[]);
  const banners=useMemo(()=>(['1200x628','728x90','300x250','1080x1080'] as BannerSize[]),[]);
  return <section className="sectionBlock assetSection">
-  <div className="sectionHeading"><div><p className="eyebrow">{lang==='pt'?'ARQUIVOS DE MARCA':'BRAND ASSETS'}</p><h2>{lang==='pt'?'Logos e banners para download':'Download-ready logos & banners'}</h2></div><p>{lang==='pt'?'Todos os botões abaixo geram arquivos reais no navegador, prontos para salvar e publicar.':'Every button below generates a real downloadable file in your browser, ready to publish.'}</p></div>
+  <div className="sectionHeading"><div><p className="eyebrow">{({pt:'ARQUIVOS DE MARCA',es:'ARCHIVOS DE MARCA',de:'MARKENASSETS',ja:'ブランド素材',en:'BRAND ASSETS'} as any)[lang]}</p><h2>{({pt:'Logos e banners para download',es:'Logos y banners para descargar',de:'Logos & Banner zum Download',ja:'ロゴ・バナーをダウンロード',en:'Download-ready logos & banners'} as any)[lang]}</h2></div><p>{({pt:'Arquivos reais gerados no navegador, prontos para salvar e publicar.',es:'Archivos reales generados en el navegador, listos para guardar y publicar.',de:'Dateien werden direkt im Browser erzeugt und können gespeichert und veröffentlicht werden.',ja:'ブラウザで実ファイルを生成し、保存・公開できます。',en:'Every button generates a real downloadable file in your browser, ready to publish.'} as any)[lang]}</p></div>
   <h3 className="assetGroupTitle">{lang==='pt'?'Logos':'Logos'}</h3>
   <div className="assetGrid">{logos.map(([v,label])=>{const svg=logoSvg(v);return <article className="assetCard" key={v}><div className={'assetPreview '+(v.includes('dark')?'dark':'')}><img src={svgData(svg)} alt={label}/></div><strong>{lang==='pt'?label.replace('Full logo','Logo completo').replace('light background','fundo claro').replace('dark background','fundo escuro').replace('Icon','Ícone'):label}</strong><Buttons svg={svg} base={'business-calculator-hub-'+v} jpg={false}/></article>})}</div>
   <h3 className="assetGroupTitle">{lang==='pt'?'Banners':'Banners'}</h3>

@@ -1,44 +1,4 @@
-import type { Metadata } from 'next';
-import Script from 'next/script';
-import AffiliateTracker from './components/AffiliateTracker';
-import SiteHeader from './components/SiteHeader';
-import './globals.css';
-import './calculator-theme.css';
-import './site-header.css';
-
-export const metadata: Metadata = {
-  metadataBase: new URL('https://business-calculator-hub.vercel.app'),
-  title: {
-    default: 'Business Calculator Hub | Free Money & Business Calculators',
-    template: '%s | Business Calculator Hub',
-  },
-  description: 'Free calculators for salary, freelance rates, profit margins and business decisions.',
-  verification: {
-    google: 'GvjIrfdNuogFaBAliRlEmlyk9Sjc3i0X7zOnSZQpaeI',
-    other: {
-      'impact-site-verification': '793175c9-c344-42fa-bf9e-4087374fd188',
-    },
-  },
-};
-
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return (
-    <html lang="en">
-      <body>
-        <SiteHeader />
-        {children}
-        <AffiliateTracker />
-        <Script
-          src="https://www.googletagmanager.com/gtag/js?id=G-HQE0NEPTWV"
-          strategy="afterInteractive"
-        />
-        <Script id="google-analytics" strategy="afterInteractive">
-          {`window.dataLayer = window.dataLayer || [];
-window.gtag = function(){ window.dataLayer.push(arguments); };
-window.gtag('js', new Date());
-window.gtag('config', 'G-HQE0NEPTWV');`}
-        </Script>
-      </body>
-    </html>
-  );
-}
+import type {Metadata} from 'next';import Script from 'next/script';import {headers} from 'next/headers';import AffiliateTracker from './components/AffiliateTracker';import SiteHeader from './components/SiteHeader';import './globals.css';import './calculator-theme.css';import './site-header.css';
+export const metadata:Metadata={metadataBase:new URL('https://business-calculator-hub.vercel.app'),title:{default:'Business Calculator Hub | Free Money & Business Calculators',template:'%s | Business Calculator Hub'},description:'Free calculators for salary, freelance rates, profit margins and business decisions.',verification:{google:'GvjIrfdNuogFaBAliRlEmlyk9Sjc3i0X7zOnSZQpaeI',other:{'impact-site-verification':'793175c9-c344-42fa-bf9e-4087374fd188'}}};
+const langFor=(p:string)=>p.startsWith('/pt-br')?'pt-BR':p.startsWith('/es-mx')?'es-MX':p.startsWith('/es-cl')?'es-CL':p.startsWith('/de-de')?'de-DE':p.startsWith('/en-in')?'en-IN':p.startsWith('/ja-jp')?'ja-JP':p.startsWith('/en-gb')?'en-GB':'en';
+export default async function RootLayout({children}:{children:React.ReactNode}){const h=await headers();const lang=langFor(h.get('x-pathname')||'/');return <html lang={lang}><body><SiteHeader/>{children}<AffiliateTracker/><Script src="https://www.googletagmanager.com/gtag/js?id=G-HQE0NEPTWV" strategy="afterInteractive"/><Script id="google-analytics" strategy="afterInteractive">{`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config','G-HQE0NEPTWV');`}</Script></body></html>}
