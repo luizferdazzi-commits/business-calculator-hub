@@ -22,16 +22,6 @@ export default function Home(){
   return <main className={s.page}>
     <div className={s.topbar}>🚀 Trusted by freelancers, entrepreneurs and small businesses worldwide ⭐ 100% Free Calculators</div>
     <div className={s.wrap}>
-      <header className={s.header}>
-        <Link href="/" className={s.brand}><span className={s.logoBox}>▦</span><span>BUSINESS<br/><span className={s.brandBlue}>CALCULATOR HUB</span></span></Link>
-        <nav className={s.nav}>
-          <Link href="#calculators">Calculators⌄</Link>
-          <Link href="/guides">Guides</Link>\n          <Link href="/pt-br">🇧🇷 Português</Link>
-          <Link href="/ai-tools">AI Tools <span className={s.new}>NEW</span></Link>
-          <Link href="/advertise" className={s.adNav}>📣 ADVERTISE WITH US</Link>
-        </nav>
-      </header>
-
       <section className={s.hero}>
         <div>
           <span className={s.kicker}>FREE BUSINESS TOOLS & GUIDES</span>
