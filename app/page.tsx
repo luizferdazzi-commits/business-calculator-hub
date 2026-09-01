@@ -4,7 +4,7 @@ import s from './home.module.css';
 const cards = [
   { href:'/freelance-rate-calculator', icon:'$', title:'Freelance Rate Calculator', text:'Calculate your ideal hourly rate' },
   { href:'/roi-calculator', icon:'↗', title:'ROI Calculator', text:'Measure the return on investment' },
-  { href:'/salary-to-hourly-calculator', icon:'◉', title:'Salary Calculator', text:'Calculate salary after taxes' },
+  { href:'/salary-to-hourly-calculator', icon:'◉', title:'Salary to Hourly Calculator', text:'Convert annual salary into hourly pay' },
   { href:'/markup-calculator', icon:'▦', title:'Business Pricing Calculator', text:'Estimate selling prices and markup' },
   { href:'/break-even-calculator', icon:'◔', title:'Break-Even Calculator', text:'Find your break-even point' },
   { href:'/payback-period-calculator', icon:'↻', title:'Payback Period Calculator', text:'Estimate investment recovery time' },
