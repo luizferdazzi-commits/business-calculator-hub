@@ -20,7 +20,6 @@ const cards = [
 
 export default function Home(){
   return <main className={s.page}>
-    <div className={s.topbar}>🚀 Trusted by freelancers, entrepreneurs and small businesses worldwide ⭐ 100% Free Calculators</div>
     <div className={s.wrap}>
       <section className={s.hero}>
         <div>
