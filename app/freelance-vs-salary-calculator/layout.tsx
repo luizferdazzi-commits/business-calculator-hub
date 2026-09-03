@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Freelance vs Salary Calculator",description:"Compare freelance earnings with employee compensation using salary, benefits, hours and business costs.",alternates:{canonical:'/freelance-vs-salary-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
