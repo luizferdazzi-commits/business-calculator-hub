@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import s from './home.module.css';
 
-const Flag=({code,name}:{code:string,name:string})=><img className={s.marketFlag} src={\`https://flagcdn.com/w40/\${code}.png\`} alt={\`Flag of \${name}\`} loading="eager"/>;
+const Flag=({code,name}:{code:string,name:string})=><img className={s.marketFlag} src={'https://flagcdn.com/w40/'+code+'.png'} alt={'Flag of '+name} loading="eager"/>;
 const markets=[['/','us','United States'],['/pt-br','br','Brazil'],['/es-mx','mx','Mexico'],['/es-cl','cl','Chile'],['/en-gb','gb','United Kingdom'],['/de-de','de','Germany'],['/en-in','in','India'],['/ja-jp','jp','Japan']] as const;
 const cards=[
 ['/freelance-rate-calculator','$','Freelance Rate Calculator','Calculate your ideal hourly rate'],
