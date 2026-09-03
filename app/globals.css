@@ -277,3 +277,12 @@
 .heroCalcTop{height:38px;background:#eef3fb;display:flex;align-items:center;gap:6px;padding:0 12px;color:#61708a;font-size:9px;font-weight:800}.heroCalcTop i{width:7px;height:7px;border-radius:50%;background:#aebbd0}.heroCalcTop span{margin-left:7px}
 .heroCalcBody{padding:24px;color:#07142d}.heroCalcBody>small{color:#1457e6;font-size:9px;font-weight:900;letter-spacing:.13em}.heroCalcBody>strong{display:block;font-size:24px;margin:6px 0 20px}.heroCalcFields{display:grid;grid-template-columns:1fr auto;gap:10px;padding:15px;border:1px solid #e1e8f3;border-radius:11px;background:#f8faff}.heroCalcFields span{color:#68758c;font-size:11px}.heroCalcFields b{font-size:12px}.heroCalcResult{margin-top:12px;padding:15px;border-radius:11px;background:#eaf2ff;display:flex;align-items:center;justify-content:space-between}.heroCalcResult span{font-size:11px;font-weight:800;color:#53617a}.heroCalcResult strong{font-size:28px;color:#1457e6}
 @media(max-width:1050px){.shell>.hero.heroCompact.advertiseHero{padding-right:38px}.advertiseHeroVisual{display:none}}
+
+/* Approved advertise hero proof strip */
+.advertiseHeroTrust{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:34px;max-width:920px}
+.advertiseHeroTrust>div{display:flex;align-items:center;gap:10px;padding:12px 10px 0;border-top:1px solid rgba(255,255,255,.16)}
+.advertiseHeroTrust span{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.10);color:#66a5ff;font-weight:900;flex:0 0 auto}
+.advertiseHeroTrust strong{color:#fff;font-size:12px;line-height:1.35}
+@media(max-width:1250px){.advertiseHeroTrust{grid-template-columns:repeat(2,minmax(0,1fr));max-width:640px}}
+@media(max-width:1050px){.advertiseHeroTrust{grid-template-columns:repeat(4,minmax(0,1fr));max-width:none}}
+@media(max-width:680px){.advertiseHeroTrust{grid-template-columns:1fr 1fr;margin-top:24px}.advertiseHeroTrust strong{font-size:11px}}
