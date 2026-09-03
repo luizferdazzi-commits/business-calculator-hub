@@ -10,8 +10,7 @@ export const metadata = {
 export default async function AdvertisePage(){
   const audience=await getAudienceData();
   return <main className="shell">
-    <header className="header"><Link className="brand" href="/">Business Calculator Hub</Link><nav className="nav"><Link href="/">Calculators</Link><Link href="/guides">Guides</Link><Link href="/ai-tools">AI Tools</Link></nav></header>
-    <section className="hero heroCompact advertiseHero">
+        <section className="hero heroCompact advertiseHero">
       <p className="eyebrow">ADVERTISE WITH US</p>
       <h1>Reach people while they are making business decisions.</h1>
       <p className="lead">Business Calculator Hub helps freelancers, entrepreneurs and small businesses make pricing, compensation, profitability and investment decisions. We offer relevant, clearly labeled sponsorship opportunities for brands that serve this audience.</p>

@@ -36,3 +36,212 @@
 .siteAdvertise{background:#1457e6!important;color:#fff!important;border:0!important;border-radius:10px!important;padding:12px 16px!important;box-shadow:0 8px 20px rgba(20,87,230,.18)!important}
 .siteAllTools{font-size:13px!important;color:#66738e!important}
 @media(max-width:900px){.siteHeader{padding:12px 18px!important}.siteNav{gap:10px!important}.siteAdvertise{padding:9px 12px!important}}
+
+
+/* Internal pages — unified with the approved Hub market layout */
+.shell{
+  max-width:1480px;
+  margin:0 auto;
+  padding:0 48px 72px;
+}
+.shell>.hero,
+.shell>.article,
+.shell>.calculator{
+  position:relative;
+}
+.shell>.hero.heroCompact{
+  max-width:none;
+  margin:0;
+  padding:52px 38px 42px;
+  background:linear-gradient(135deg,#fff 0%,#f7faff 58%,#eef4ff 100%);
+  border:1px solid #e0e7f3;
+  border-top:0;
+  box-shadow:0 12px 36px rgba(17,45,94,.06);
+}
+.shell>.hero.heroCompact:before{
+  content:"";
+  position:absolute;
+  right:26px;
+  top:26px;
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(20,87,230,.12),rgba(20,87,230,0) 70%);
+  pointer-events:none;
+}
+.shell>.hero.heroCompact .eyebrow{
+  display:inline-block;
+  margin:0 0 10px;
+  padding:7px 11px;
+  background:#eaf2ff;
+  border:1px solid #d5e4ff;
+  border-radius:999px;
+  color:#1457e6;
+  font-size:11px;
+  font-weight:900;
+  letter-spacing:.13em;
+}
+.shell>.hero.heroCompact h1{
+  max-width:980px;
+  margin:6px 0 18px;
+  font-size:clamp(44px,5vw,68px);
+  line-height:1.01;
+  letter-spacing:-.048em;
+  color:#07142d;
+}
+.shell>.hero.heroCompact .lead{
+  max-width:860px;
+  margin:0;
+  color:#56637a;
+  font-size:18px;
+  line-height:1.55;
+}
+.shell>.hero.heroCompact .heroActions{
+  margin-top:24px;
+}
+.shell>.hero.heroCompact .primary,
+.shell>.proposalPanel .primary,
+.shell>.sponsorCallout .primary,
+.shell>.earlyPartnerPanel .primary{
+  background:#1457e6;
+  border-radius:10px;
+  box-shadow:0 8px 20px rgba(20,87,230,.18);
+}
+.shell>.hero.heroCompact .secondary{
+  border-radius:10px;
+  border-color:#d9e2f0;
+  background:#fff;
+}
+.shell>.hero.heroCompact .trustRow{
+  margin-top:22px;
+  gap:12px;
+}
+.shell>.hero.heroCompact .trustRow span{
+  padding:9px 11px;
+  border:1px solid #e0e7f3;
+  border-radius:10px;
+  background:#fff;
+  color:#53617a;
+  font-size:12px;
+}
+.shell>.valueStrip,
+.shell>.trafficProof,
+.shell>.proposalPanel,
+.shell>.splitFeature,
+.shell>.sponsorCallout,
+.shell>.ctaPanel{
+  border-color:#dfe7f3;
+  box-shadow:0 12px 34px rgba(25,61,125,.06);
+}
+.shell>.valueStrip{
+  margin-top:14px;
+  border-radius:14px;
+}
+.shell>.valueStrip div{
+  padding:18px 20px;
+}
+.shell>.valueStrip strong{
+  color:#1457e6;
+}
+.shell>.sectionBlock{
+  padding-top:44px;
+}
+.shell>.sectionHeading{
+  align-items:center;
+}
+.shell>.sectionHeading .eyebrow{
+  color:#1457e6;
+}
+.shell>.sectionHeading h2,
+.shell>.splitFeature h2,
+.shell>.sponsorCallout h2,
+.shell>.proposalPanel h2{
+  color:#07142d;
+}
+.shell>.guideGrid{
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:14px;
+}
+.shell>.guideCard{
+  min-height:210px;
+  border-radius:14px;
+  border-color:#dfe6f1;
+  box-shadow:0 7px 20px rgba(23,50,96,.04);
+}
+.shell>.guideCard:hover{
+  border-color:#b9cdf8;
+  box-shadow:0 16px 34px rgba(26,70,150,.10);
+}
+.shell>.guideCard .toolIcon{
+  background:#eaf2ff;
+  color:#1457e6;
+  border-radius:10px;
+}
+.shell>.guideCard .tag{
+  color:#1457e6;
+}
+.shell>.splitFeature{
+  margin-top:54px;
+  border-radius:18px;
+  background:linear-gradient(135deg,#071936,#0c2f68 65%,#1457a8);
+}
+.shell>.sponsorCallout{
+  margin-top:44px;
+  border-radius:14px;
+  background:linear-gradient(90deg,#f5f8ff,#fff);
+}
+.shell>.trafficProof{
+  border-radius:18px;
+  padding:30px;
+}
+.shell>.trafficMetrics div,
+.shell>.momentumGrid>div,
+.shell>.mediaKitCard,
+.shell>.intentPanel,
+.shell>.earlyPartnerPanel{
+  border-radius:12px;
+  border-color:#dfe7f3;
+}
+.shell>.proposalPanel{
+  margin-top:54px;
+  border-radius:18px;
+  padding:34px;
+}
+.shell>.proposalForm input,
+.shell>.proposalForm select,
+.shell>.proposalForm textarea{
+  border-radius:9px;
+  border-color:#d6dfed;
+}
+.shell>.footer{
+  margin-top:48px;
+}
+.shell>.calculator,
+.shell>.article{
+  max-width:1180px;
+  margin:0 auto;
+}
+.shell>.calculator h1,
+.shell>.article h1{
+  color:#07142d;
+  font-size:clamp(42px,4.6vw,64px);
+}
+.shell>.panel,
+.shell>.result,
+.shell>.feature,
+.shell>.cards article{
+  border-radius:14px;
+  border-color:#dfe6f1;
+}
+@media(max-width:1100px){
+  .shell{padding-left:28px;padding-right:28px}
+  .shell>.guideGrid,.shell .guideGrid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .shell{padding:0 14px 52px}
+  .shell>.hero.heroCompact{padding:30px 18px 26px}
+  .shell>.hero.heroCompact h1{font-size:40px}
+  .shell>.hero.heroCompact .lead{font-size:16px}
+  .shell>.guideGrid,.shell .guideGrid{grid-template-columns:1fr}
+  .shell>.trafficProof,.shell>.proposalPanel{padding:22px 16px}
+}
