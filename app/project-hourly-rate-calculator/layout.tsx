@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Project Hourly Rate Calculator",description:"Estimate the hourly rate needed to reach your annual project income target.",alternates:{canonical:'/project-hourly-rate-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
