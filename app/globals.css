@@ -245,3 +245,44 @@
   .shell>.guideGrid,.shell .guideGrid{grid-template-columns:1fr}
   .shell>.trafficProof,.shell>.proposalPanel{padding:22px 16px}
 }
+
+
+/* Advertise hero — stronger commercial emphasis */
+.shell>.hero.heroCompact.advertiseHero{
+  background:linear-gradient(118deg,#071936 0%,#0d3474 55%,#1457e6 100%);
+  border-color:#164b9d;
+  box-shadow:0 20px 52px rgba(7,25,54,.20);
+  overflow:hidden;
+}
+.shell>.hero.heroCompact.advertiseHero:before{
+  right:-40px;top:-70px;width:430px;height:430px;
+  background:radial-gradient(circle,rgba(79,143,255,.38),rgba(20,87,230,0) 68%);
+}
+.shell>.hero.heroCompact.advertiseHero .eyebrow{
+  position:relative;z-index:1;background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);color:#dce9ff;
+}
+.shell>.hero.heroCompact.advertiseHero h1{position:relative;z-index:1;color:#fff;max-width:1000px;text-shadow:0 3px 18px rgba(0,0,0,.12)}
+.shell>.hero.heroCompact.advertiseHero .lead{position:relative;z-index:1;color:#dbe7fb;max-width:920px}
+.shell>.hero.heroCompact.advertiseHero .heroActions{position:relative;z-index:1}
+.shell>.hero.heroCompact.advertiseHero .primary{background:#fff;color:#0d3e92!important;box-shadow:0 10px 28px rgba(0,0,0,.20)}
+.shell>.hero.heroCompact.advertiseHero .primary:hover{box-shadow:0 14px 34px rgba(0,0,0,.25)}
+.shell>.hero.heroCompact.advertiseHero .secondary{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.34);color:#fff!important;backdrop-filter:blur(8px)}
+.shell>.hero.heroCompact.advertiseHero .secondary:hover{background:rgba(255,255,255,.18);border-color:rgba(255,255,255,.55)}
+@media(max-width:680px){.shell>.hero.heroCompact.advertiseHero{padding:34px 20px 30px}.shell>.hero.heroCompact.advertiseHero h1{font-size:40px}}
+
+/* Calculator product visual inside advertising hero */
+.shell>.hero.heroCompact.advertiseHero{padding-right:440px;min-height:430px}
+.advertiseHeroVisual{position:absolute;z-index:1;right:42px;top:50%;width:340px;transform:translateY(-50%) rotate(2deg);filter:drop-shadow(0 24px 30px rgba(0,0,0,.25))}
+.heroCalcWindow{overflow:hidden;border:1px solid rgba(255,255,255,.45);border-radius:18px;background:#fff;box-shadow:0 20px 60px rgba(0,0,0,.24)}
+.heroCalcTop{height:38px;background:#eef3fb;display:flex;align-items:center;gap:6px;padding:0 12px;color:#61708a;font-size:9px;font-weight:800}.heroCalcTop i{width:7px;height:7px;border-radius:50%;background:#aebbd0}.heroCalcTop span{margin-left:7px}
+.heroCalcBody{padding:24px;color:#07142d}.heroCalcBody>small{color:#1457e6;font-size:9px;font-weight:900;letter-spacing:.13em}.heroCalcBody>strong{display:block;font-size:24px;margin:6px 0 20px}.heroCalcFields{display:grid;grid-template-columns:1fr auto;gap:10px;padding:15px;border:1px solid #e1e8f3;border-radius:11px;background:#f8faff}.heroCalcFields span{color:#68758c;font-size:11px}.heroCalcFields b{font-size:12px}.heroCalcResult{margin-top:12px;padding:15px;border-radius:11px;background:#eaf2ff;display:flex;align-items:center;justify-content:space-between}.heroCalcResult span{font-size:11px;font-weight:800;color:#53617a}.heroCalcResult strong{font-size:28px;color:#1457e6}
+@media(max-width:1050px){.shell>.hero.heroCompact.advertiseHero{padding-right:38px}.advertiseHeroVisual{display:none}}
+
+/* Approved advertise hero proof strip */
+.advertiseHeroTrust{position:relative;z-index:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:34px;max-width:920px}
+.advertiseHeroTrust>div{display:flex;align-items:center;gap:10px;padding:12px 10px 0;border-top:1px solid rgba(255,255,255,.16)}
+.advertiseHeroTrust span{display:grid;place-items:center;width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.10);color:#66a5ff;font-weight:900;flex:0 0 auto}
+.advertiseHeroTrust strong{color:#fff;font-size:12px;line-height:1.35}
+@media(max-width:1250px){.advertiseHeroTrust{grid-template-columns:repeat(2,minmax(0,1fr));max-width:640px}}
+@media(max-width:1050px){.advertiseHeroTrust{grid-template-columns:repeat(4,minmax(0,1fr));max-width:none}}
+@media(max-width:680px){.advertiseHeroTrust{grid-template-columns:1fr 1fr;margin-top:24px}.advertiseHeroTrust strong{font-size:11px}}
