@@ -67,14 +67,14 @@ export default function AffiliateTracker() {
       if (!input || !['INPUT', 'SELECT', 'TEXTAREA'].includes(input.tagName)) return;
 
       const path = window.location.pathname;
-      const isCalculator = path.includes('calculator') || path.includes('calculadora-') || path === '/';
+      const isCalculator = path.includes('calculadora-');
       if (!isCalculator) return;
 
-      const key = `calculator_started:${path}`;
+      const key = `calculator_completed:${path}`;
       if (sessionStorage.getItem(key)) return;
 
       sessionStorage.setItem(key, '1');
-      send('calculator_started', {
+      send('calculator_completed', {
         calculator_name: calculatorName(),
         page_path: path,
       });
