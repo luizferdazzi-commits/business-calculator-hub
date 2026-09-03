@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Selling Price Calculator",description:"Calculate the selling price required to reach a target profit margin from your cost.",alternates:{canonical:'/selling-price-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
