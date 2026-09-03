@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Fixed Project Price Calculator",description:"Estimate a fixed project price from hourly rate, project hours, costs and safety buffer.",alternates:{canonical:'/fixed-project-price-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
