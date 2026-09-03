@@ -49,11 +49,13 @@ export default function AffiliateTracker() {
 
       const host = url.hostname.toLowerCase();
       const partner =
-        host === 'riibase.pxf.io' || host.endsWith('.pxf.io')
+        host === 'riibase.pxf.io'
           ? 'riibase'
-          : host === 'creaoailimited.sjv.io' || host.endsWith('.sjv.io')
-            ? 'creao'
-            : '';
+          : host === 'wizstar.pxf.io' || (host === 'wizstar.com' || host.endsWith('.wizstar.com'))
+            ? 'wizstar'
+            : host === 'creaoailimited.sjv.io'
+              ? 'creao'
+              : '';
 
       if (partner) {
         send('affiliate_click', { ...common, affiliate_partner: partner });
@@ -65,14 +67,14 @@ export default function AffiliateTracker() {
       if (!input || !['INPUT', 'SELECT', 'TEXTAREA'].includes(input.tagName)) return;
 
       const path = window.location.pathname;
-      const isCalculator = path.includes('calculator') || path === '/';
+      const isCalculator = path.includes('calculator') || path.includes('calculadora-') || path === '/';
       if (!isCalculator) return;
 
-      const key = `calculator_completed:${path}`;
+      const key = `calculator_started:${path}`;
       if (sessionStorage.getItem(key)) return;
 
       sessionStorage.setItem(key, '1');
-      send('calculator_completed', {
+      send('calculator_started', {
         calculator_name: calculatorName(),
         page_path: path,
       });
