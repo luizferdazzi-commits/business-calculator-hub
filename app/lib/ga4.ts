@@ -21,6 +21,10 @@ async function post(path:string,body:any){
   if(!r.ok) throw new Error('GA4 '+path+' failed: '+r.status+' '+await r.text());
   return r.json();
 }
+async function safeReport(body:any){
+  try{return await post(':runReport',body)}
+  catch(e){console.error('GA4 optional report failed',e);return {rows:[]}}
+}
 const num=(v:any)=>Number(v?.value||v||0);
 const metric=(row:any,i:number)=>num(row?.metricValues?.[i]);
 const dim=(row:any,i:number)=>row?.dimensionValues?.[i]?.value||'';
@@ -28,19 +32,19 @@ const growth=(now:number,prev:number)=>prev?Math.round((now-prev)/prev*1000)/10:
 const metrics=[{name:'activeUsers'},{name:'sessions'},{name:'screenPageViews'}];
 
 async function loadHistorical(){
-  const [summary,countries,content,daily,channels,sources]=await Promise.all([
-    post(':runReport',{dateRanges:[
+  const summary=await post(':runReport',{dateRanges:[
       {startDate:'29daysAgo',endDate:'today',name:'monthly'},
       {startDate:'6daysAgo',endDate:'today',name:'weekly'},
       {startDate:'13daysAgo',endDate:'7daysAgo',name:'previousWeekly'},
       {startDate:'2daysAgo',endDate:'today',name:'last3'},
       {startDate:'5daysAgo',endDate:'3daysAgo',name:'previous3'}
-    ],metrics}),
-    post(':runReport',{dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'country'}],metrics:[{name:'activeUsers'}],orderBys:[{metric:{metricName:'activeUsers'},desc:true}],limit:50}),
-    post(':runReport',{dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'pagePath'},{name:'pageTitle'}],metrics:[{name:'screenPageViews'}],orderBys:[{metric:{metricName:'screenPageViews'},desc:true}],limit:25}),
-    post(':runReport',{dateRanges:[{startDate:'13daysAgo',endDate:'today'}],dimensions:[{name:'date'}],metrics,orderBys:[{dimension:{dimensionName:'date'},desc:false}],limit:20}),
-    post(':runReport',{dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionDefaultChannelGroup'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:20}),
-    post(':runReport',{dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionSource'},{name:'sessionMedium'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:25})
+    ],metrics});
+  const [countries,content,daily,channels,sources]=await Promise.all([
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'country'}],metrics:[{name:'activeUsers'}],orderBys:[{metric:{metricName:'activeUsers'},desc:true}],limit:50}),
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'pagePath'},{name:'pageTitle'}],metrics:[{name:'screenPageViews'}],orderBys:[{metric:{metricName:'screenPageViews'},desc:true}],limit:25}),
+    safeReport({dateRanges:[{startDate:'13daysAgo',endDate:'today'}],dimensions:[{name:'date'}],metrics,orderBys:[{dimension:{dimensionName:'date'},desc:false}],limit:20}),
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionDefaultChannelGroup'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:20}),
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionSource'},{name:'sessionMedium'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:25})
   ]);
 
   const rows=summary.rows||[];
