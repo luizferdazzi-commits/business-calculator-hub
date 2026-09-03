@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Freelance Rate Calculator",description:"Estimate a sustainable freelance hourly rate from income goals, expenses, taxes and billable time.",alternates:{canonical:'/freelance-rate-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
