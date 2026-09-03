@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Commission Calculator",description:"Calculate sales commission and total compensation from sales, commission rate and optional base pay.",alternates:{canonical:'/commission-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
