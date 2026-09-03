@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"CAC & LTV Calculator",description:"Calculate customer acquisition cost, lifetime value and the LTV to CAC ratio.",alternates:{canonical:'/cac-ltv-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}

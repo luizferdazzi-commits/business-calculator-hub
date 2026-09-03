@@ -62,7 +62,7 @@ export default function FreelanceRateCalculator(){
   const number=(n:number)=>n.toLocaleString('en-US',{maximumFractionDigits:0});
 
   return <main className="shell">
-    <header className="header"><Link className="brand" href="/">Business Calculator Hub</Link><Link href="/">All calculators</Link></header>
+    
     <section className="calculator">
       <p className="eyebrow">FREELANCE PRICING TOOL</p>
       <h1>Freelance Rate Calculator</h1>

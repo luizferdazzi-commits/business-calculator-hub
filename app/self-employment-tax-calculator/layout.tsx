@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Self-Employment Tax Calculator",description:"Estimate US self-employment tax and ordinary income tax from freelance business profit.",alternates:{canonical:'/self-employment-tax-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}

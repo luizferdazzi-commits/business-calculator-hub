@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Business Runway Calculator",description:"Estimate business runway in months from available cash, revenue and expenses.",alternates:{canonical:'/runway-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}

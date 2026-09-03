@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Discount Margin Calculator",description:"Check the effect of a discount on final price, profit and profit margin.",alternates:{canonical:'/discount-margin-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}

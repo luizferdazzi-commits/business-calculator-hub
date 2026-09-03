@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Salary to Hourly Calculator",description:"Convert annual salary to hourly, daily, weekly and monthly pay with adjustable working hours and paid weeks.",alternates:{canonical:'/salary-to-hourly-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}

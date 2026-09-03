@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"ROI Calculator",description:"Calculate return on investment, net profit and ROI percentage for a business investment.",alternates:{canonical:'/roi-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}

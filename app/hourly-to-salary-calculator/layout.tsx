@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Hourly to Salary Calculator",description:"Convert an hourly wage to estimated annual, monthly, weekly and daily salary.",alternates:{canonical:'/hourly-to-salary-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}

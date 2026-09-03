@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Markup Calculator",description:"Calculate selling price, profit and margin from product cost and target markup.",alternates:{canonical:'/markup-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
