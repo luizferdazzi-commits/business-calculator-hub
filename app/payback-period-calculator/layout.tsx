@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Payback Period Calculator",description:"Estimate how long an investment takes to pay back from recurring cash inflows.",alternates:{canonical:'/payback-period-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
