@@ -41,7 +41,7 @@ export default function SiteHeader(){
         <Link href={(base||'')+'/#calculators'}>{d.calc}</Link>
         <Link href={guides}>{d.guides}</Link>
         {!key&&<Link href="/ai-tools">AI Tools <small>NEW</small></Link>}
-        <Link href={advertise}>{d.advertise}</Link>
+        <Link href={advertise}>{d.advertise}</Link>\n        {key==='pt-br'&&<Link href="/pt-br/#sobre">Sobre</Link>}
         <div className={"siteNavDropdown"+(marketOpen?" open":"")}><button type="button" aria-label={d.marketAria} aria-expanded={marketOpen} onClick={()=>setMarketOpen(v=>!v)}>🌐 {key?markets.find(m=>m[0]===base)?.[1].replace(/^.. /,''): d.markets} ▾</button><div className="siteNavMenu siteMarketMenu">{markets.map(([href,label])=><Link key={href} href={href} onClick={()=>setMarketOpen(false)}>{label}</Link>)}</div></div>
       </nav>
       <div className="siteHeaderActions"><Link className="siteAdvertise" href={advertise}>{d.adCta}</Link><Link className="siteAllTools" href={(base||'')+'/#calculators'}>{d.all}</Link></div>
