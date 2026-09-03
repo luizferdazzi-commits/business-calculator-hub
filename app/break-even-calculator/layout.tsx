@@ -1,0 +1,1 @@
+import type {Metadata} from 'next';export const metadata:Metadata={title:"Break-even Calculator",description:"Calculate break-even sales volume, revenue and contribution margin from fixed and variable costs.",alternates:{canonical:'/break-even-calculator'}};export default function Layout({children}:{children:React.ReactNode}){return children}
