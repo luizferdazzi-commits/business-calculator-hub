@@ -1,0 +1,49 @@
+import Link from 'next/link';
+
+type Locale='pt-br'|'es-mx'|'es-cl'|'de-de'|'en-in'|'ja-jp'|'en-gb';
+const base='https://business-calculator-hub.vercel.app';
+
+const formulas:Record<string,string>={
+  'freelance-rate-calculator':'Hourly rate = (target annual income + annual expenses) ÷ (1 − tax rate) ÷ billable hours',
+  'roi-calculator':'ROI (%) = (return − investment) ÷ investment × 100',
+  'salary-to-hourly-calculator':'Hourly rate = annual salary ÷ (hours per week × working weeks per year)',
+  'markup-calculator':'Selling price = cost × (1 + markup %)',
+  'break-even-calculator':'Break-even units = fixed costs ÷ (selling price − variable cost per unit)',
+  'payback-period-calculator':'Payback period = initial investment ÷ annual cash return',
+  'cac-ltv-calculator':'CAC = marketing spend ÷ new customers; LTV ≈ monthly revenue per customer ÷ monthly churn rate',
+  'runway-calculator':'Runway (months) = available cash ÷ monthly burn',
+  'selling-price-calculator':'Selling price = cost ÷ (1 − target margin)',
+  'discount-margin-calculator':'Discounted price = original price × (1 − discount); margin = (price − cost) ÷ price',
+  'fixed-project-price-calculator':'Project price = estimated hours × target hourly value × (1 + safety margin)',
+  'project-hourly-rate-calculator':'Project hourly rate = (income target + expenses) ÷ available working hours',
+  'freelance-vs-salary-calculator':'Compare annual employment compensation with freelance revenue after expenses and estimated taxes'
+};
+
+const copy:Record<Locale,{what:string;method:string;example:string;when:string;limits:string;faq:string;related:string;whatBody:string;exampleBody:string;whenBody:string;limitsBody:string;q1:string;a1:string;q2:string;a2:string}>={
+  'pt-br':{what:'O que esta calculadora faz?',method:'Fórmula e metodologia',example:'Exemplo de uso',when:'Quando usar',limits:'Limitações',faq:'Perguntas frequentes',related:'Calculadoras relacionadas',whatBody:'Use esta ferramenta para transformar dados financeiros ou profissionais em uma estimativa objetiva para apoiar sua decisão.',exampleBody:'Preencha os campos com seus próprios valores. O resultado é recalculado imediatamente e pode ser usado para comparar cenários.',whenBody:'Use antes de definir preços, avaliar investimentos, planejar caixa ou comparar alternativas de trabalho e negócio.',limitsBody:'O resultado é uma estimativa educacional. Impostos, contratos, custos e regras locais podem mudar; confirme obrigações legais e tributárias em fontes oficiais.',q1:'Posso usar o resultado para tomar uma decisão financeira?',a1:'Use-o como referência e análise de cenário, não como aconselhamento financeiro, jurídico ou tributário individual.',q2:'A calculadora é gratuita?',a2:'Sim. As calculadoras do Business Calculator Hub são gratuitas e não exigem login.'},
+  'es-mx':{what:'¿Qué hace esta calculadora?',method:'Fórmula y metodología',example:'Ejemplo de uso',when:'Cuándo usarla',limits:'Limitaciones',faq:'Preguntas frecuentes',related:'Calculadoras relacionadas',whatBody:'Utiliza esta herramienta para convertir datos financieros o profesionales en una estimación objetiva para apoyar una decisión.',exampleBody:'Completa los campos con tus propios valores. El resultado se actualiza de inmediato para comparar escenarios.',whenBody:'Úsala antes de fijar precios, evaluar inversiones, planificar caja o comparar alternativas de trabajo y negocio.',limitsBody:'El resultado es una estimación educativa. Impuestos, contratos, costos y reglas locales pueden cambiar; verifica obligaciones con fuentes oficiales.',q1:'¿Puedo usar el resultado para tomar una decisión financiera?',a1:'Úsalo como referencia y análisis de escenarios, no como asesoría financiera, legal o fiscal personalizada.',q2:'¿La calculadora es gratuita?',a2:'Sí. Las calculadoras de Business Calculator Hub son gratuitas y no requieren iniciar sesión.'},
+  'es-cl':{what:'¿Qué hace esta calculadora?',method:'Fórmula y metodología',example:'Ejemplo de uso',when:'Cuándo usarla',limits:'Limitaciones',faq:'Preguntas frecuentes',related:'Calculadoras relacionadas',whatBody:'Usa esta herramienta para convertir datos financieros o profesionales en una estimación objetiva que apoye una decisión.',exampleBody:'Ingresa tus propios valores. El resultado se actualiza inmediatamente para comparar escenarios.',whenBody:'Úsala antes de fijar precios, evaluar inversiones, planificar caja o comparar alternativas de trabajo y negocio.',limitsBody:'El resultado es una estimación educativa. Impuestos, contratos, costos y reglas locales pueden cambiar; verifica las obligaciones con fuentes oficiales.',q1:'¿Puedo usar el resultado para tomar una decisión financiera?',a1:'Úsalo como referencia y análisis de escenarios, no como asesoría financiera, legal o tributaria personalizada.',q2:'¿La calculadora es gratuita?',a2:'Sí. Las calculadoras de Business Calculator Hub son gratuitas y no requieren iniciar sesión.'},
+  'de-de':{what:'Was berechnet dieses Tool?',method:'Formel und Methodik',example:'Anwendungsbeispiel',when:'Wann verwenden?',limits:'Grenzen der Berechnung',faq:'Häufige Fragen',related:'Verwandte Rechner',whatBody:'Dieses Tool wandelt finanzielle oder berufliche Eingaben in eine nachvollziehbare Schätzung zur Entscheidungsunterstützung um.',exampleBody:'Tragen Sie Ihre eigenen Werte ein. Das Ergebnis wird sofort neu berechnet, sodass Sie Szenarien vergleichen können.',whenBody:'Nutzen Sie den Rechner vor Preisentscheidungen, Investitionen, Liquiditätsplanung oder dem Vergleich beruflicher und geschäftlicher Alternativen.',limitsBody:'Das Ergebnis ist eine Orientierung. Steuern, Verträge, Kosten und lokale Regeln können sich ändern; prüfen Sie Pflichten anhand offizieller Quellen.',q1:'Kann ich das Ergebnis für eine finanzielle Entscheidung verwenden?',a1:'Nutzen Sie es als Orientierung und Szenarioanalyse, nicht als individuelle Finanz-, Rechts- oder Steuerberatung.',q2:'Ist der Rechner kostenlos?',a2:'Ja. Die Rechner im Business Calculator Hub sind kostenlos und ohne Anmeldung nutzbar.'},
+  'en-in':{what:'What does this calculator do?',method:'Formula and methodology',example:'Example use',when:'When to use it',limits:'Limitations',faq:'Frequently asked questions',related:'Related calculators',whatBody:'Use this tool to turn business or work inputs into a transparent estimate that can support a decision.',exampleBody:'Enter your own values. The result updates immediately so you can compare different scenarios.',whenBody:'Use it before setting prices, evaluating investments, planning cash, or comparing work and business options.',limitsBody:'The result is an educational estimate. Taxes, contracts, costs and local rules can change; verify legal or tax obligations with official sources.',q1:'Can I use the result to make a financial decision?',a1:'Use it as a reference and scenario analysis, not as personalised financial, legal or tax advice.',q2:'Is the calculator free?',a2:'Yes. Business Calculator Hub calculators are free and do not require a login.'},
+  'ja-jp':{what:'この計算ツールで何が分かりますか？',method:'計算式と方法',example:'使用例',when:'使うタイミング',limits:'注意点',faq:'よくある質問',related:'関連する計算ツール',whatBody:'ビジネスや仕事に関する入力値を、意思決定に使える分かりやすい概算へ変換します。',exampleBody:'ご自身の数値を入力すると結果がすぐ更新され、複数のシナリオを比較できます。',whenBody:'価格設定、投資判断、資金計画、働き方や事業案の比較を行う前に利用できます。',limitsBody:'結果は教育目的の概算です。税金、契約、費用、地域のルールは変わるため、法務・税務上の義務は公式情報で確認してください。',q1:'結果をそのまま財務判断に使えますか？',a1:'シナリオ分析の参考として利用し、個別の金融・法務・税務アドバイスの代替にはしないでください。',q2:'無料で使えますか？',a2:'はい。Business Calculator Hub の計算ツールは無料で、ログインも不要です。'},
+  'en-gb':{what:'What does this calculator do?',method:'Formula and methodology',example:'Example use',when:'When to use it',limits:'Limitations',faq:'Frequently asked questions',related:'Related calculators',whatBody:'Use this tool to turn business or work inputs into a transparent estimate that can support a decision.',exampleBody:'Enter your own values. The result updates immediately so you can compare different scenarios.',whenBody:'Use it before setting prices, evaluating investments, planning cash, or comparing work and business options.',limitsBody:'The result is an educational estimate. Taxes, contracts, costs and local rules can change; verify legal or tax obligations with official sources.',q1:'Can I use the result to make a financial decision?',a1:'Use it as a reference and scenario analysis, not as personalised financial, legal or tax advice.',q2:'Is the calculator free?',a2:'Yes. Business Calculator Hub calculators are free and do not require a login.'}
+};
+
+const related=['roi-calculator','profit-margin-calculator','break-even-calculator','payback-period-calculator','cac-ltv-calculator','runway-calculator'];
+
+export default function CalculatorAeoContent({locale,tool}:{locale:Locale;tool:string}){
+  const c=copy[locale];
+  const path=`/${locale}/${tool}`;
+  const faq={'@context':'https://schema.org','@type':'FAQPage','mainEntity':[{'@type':'Question','name':c.q1,'acceptedAnswer':{'@type':'Answer','text':c.a1}},{'@type':'Question','name':c.q2,'acceptedAnswer':{'@type':'Answer','text':c.a2}}]};
+  return <section className="content" aria-label={c.method}>
+    <script type="application/ld+json" dangerouslySetInnerHTML={{__html:JSON.stringify(faq)}}/>
+    <h2>{c.what}</h2><p>{c.whatBody}</p>
+    <h2>{c.method}</h2><p><strong>{formulas[tool]||'Result = inputs processed by the calculator methodology'}</strong></p>
+    <h2>{c.example}</h2><p>{c.exampleBody}</p>
+    <h2>{c.when}</h2><p>{c.whenBody}</p>
+    <h2>{c.limits}</h2><p>{c.limitsBody}</p>
+    <h2>{c.faq}</h2><h3>{c.q1}</h3><p>{c.a1}</p><h3>{c.q2}</h3><p>{c.a2}</p>
+    <h2>{c.related}</h2><p>{related.filter(x=>x!==tool).slice(0,4).map((slug,i)=><span key={slug}>{i?' · ':''}<Link href={`/${locale}/${slug}`}>{slug.replace(/-/g,' ')}</Link></span>)}</p>
+    <p><small>Canonical source: <Link href={path}>{base+path}</Link></small></p>
+  </section>
+}
