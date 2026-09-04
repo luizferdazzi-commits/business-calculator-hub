@@ -1,0 +1,4 @@
+import {notFound} from 'next/navigation';import type{Metadata}from'next';import{getGrowthGuide,GrowthGuidePage}from'../../../components/GrowthGuide';
+const topics=['roi-de-marketing','margem-de-lucro-servicos'];export function generateStaticParams(){return topics.map(topic=>({topic}))}
+export async function generateMetadata({params}:{params:Promise<{topic:string}>}):Promise<Metadata>{const{topic}=await params;const g=getGrowthGuide('pt-br:'+topic);if(!g)return{};return{title:g.title,description:g.description,alternates:{canonical:`/pt-br/guias/${topic}`},openGraph:{title:g.title,description:g.description,url:`/pt-br/guias/${topic}`,type:'article'}}}
+export default async function Page({params}:{params:Promise<{topic:string}>}){const{topic}=await params;if(!topics.includes(topic))notFound();const g=getGrowthGuide('pt-br:'+topic);if(!g)notFound();return <GrowthGuidePage guide={g} prefix="/pt-br/guias"/>}
