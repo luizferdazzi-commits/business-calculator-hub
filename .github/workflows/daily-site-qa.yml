@@ -1,6 +1,8 @@
 name: Daily Organic Growth QA
 
 on:
+  push:
+    branches: [main]
   schedule:
     - cron: '20 10 * * *'
   workflow_dispatch:
@@ -45,8 +47,7 @@ jobs:
           base=os.environ['BASE_URL'].rstrip('/')
           session=requests.Session()
           session.headers.update({'User-Agent':'BCH-Growth-QA/3.0 (+quality audit; no javascript execution)'})
-          failures=[];warnings=[];inbound=defaultdict(int);checked_links=set();checked_assets=set();pages={}
-
+          failures=[];warnings=[];inbound=defaultdict(int);checked_links=set();pages={}
           def get(url):
             try:return session.get(url,timeout=25,allow_redirects=True)
             except Exception as e:return e
@@ -100,17 +101,15 @@ jobs:
               except Exception:warnings.append(f'{path}: invalid JSON-LD block')
             pages[path]={'title':title,'description':desc,'canonical':canonical,'h1':h1,'wordCount':word_count}
             warn_if(not title,f'{path}: missing title');warn_if(not desc,f'{path}: missing meta description');warn_if(not h1,f'{path}: missing H1')
-            if path not in ['/privacy','/terms','/affiliate-disclosure']:
-              warn_if(not canonical,f'{path}: missing canonical')
+            if path not in ['/privacy','/terms','/affiliate-disclosure']:warn_if(not canonical,f'{path}: missing canonical')
             is_calc='calculator' in path or '/calculadora-' in path
             is_guide='/guides/' in path or '/guias/' in path
             fail_if(is_calc and 'WebApplication' not in schema_text,f'{path}: calculator missing WebApplication schema')
             fail_if(is_guide and 'Article' not in schema_text,f'{path}: guide missing Article schema')
             warn_if(path.count('/')>=2 and 'BreadcrumbList' not in schema_text,f'{path}: nested page missing BreadcrumbList schema')
             warn_if(is_calc and word_count<120,f'{path}: calculator explanatory content is thin ({word_count} words)')
-
             for a in soup.find_all('a',href=True):
-              href=a['href'];
+              href=a['href']
               if href.startswith(('mailto:','tel:','javascript:','#')):continue
               absolute=urljoin(url,href.split('#')[0]);parsed=urlparse(absolute)
               if parsed.netloc!=urlparse(base).netloc:continue
