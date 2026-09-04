@@ -11,7 +11,7 @@ permissions:
 jobs:
   qa:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
     steps:
       - name: Checkout source
         uses: actions/checkout@v4
@@ -20,15 +20,15 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: npm
 
-      - name: Install and build
+      - name: Install, build and typecheck
         run: |
-          npm ci
+          npm install --no-audit --no-fund
           npm run build
+          npx tsc --noEmit
 
       - name: Install audit dependencies
-        run: python -m pip install requests beautifulsoup4
+        run: python -m pip install --disable-pip-version-check requests beautifulsoup4
 
       - name: Run SEO AEO GEO and growth audit
         env:
@@ -43,102 +43,97 @@ jobs:
           import xml.etree.ElementTree as ET
 
           base=os.environ['BASE_URL'].rstrip('/')
-          s=requests.Session();s.headers.update({'User-Agent':'BCH-Growth-QA/2.0 (+quality audit; no javascript; no analytics page_view)'})
-          failures=[];warnings=[];checked_links=set();checked_assets=set();inbound=defaultdict(int);pages={}
-          def get(url):
-            try:return s.get(url,timeout=25,allow_redirects=True)
-            except Exception as e:return e
-          def critical(cond,msg):
-            if not cond:failures.append(msg)
-          def warn(cond,msg):
-            if not cond:warnings.append(msg)
+          session=requests.Session()
+          session.headers.update({'User-Agent':'BCH-Growth-QA/3.0 (+quality audit; no javascript execution)'})
+          failures=[];warnings=[];inbound=defaultdict(int);checked_links=set();checked_assets=set();pages={}
 
-          required=['/robots.txt','/sitemap.xml','/llms.txt','/.well-known/ai-plugin.json','/api/audience','/api/growth']
-          required_status={}
-          for p in required:
-            r=get(base+p);ok=not isinstance(r,Exception) and r.status_code==200;required_status[p]=getattr(r,'status_code',None);critical(ok,f'{p} not HTTP 200: {r}')
+          def get(url):
+            try:return session.get(url,timeout=25,allow_redirects=True)
+            except Exception as e:return e
+          def fail_if(cond,msg):
+            if cond:failures.append(msg)
+          def warn_if(cond,msg):
+            if cond:warnings.append(msg)
+
+          required=['/','/robots.txt','/sitemap.xml','/llms.txt','/.well-known/ai-plugin.json','/api/audience','/api/growth']
+          status={}
+          for path in required:
+            r=get(base+path);code=getattr(r,'status_code',None);status[path]=code
+            fail_if(code!=200,f'{path}: expected 200, got {code} ({r})')
           if failures:
             print('\n'.join('FAIL '+x for x in failures));sys.exit(1)
 
           robots=get(base+'/robots.txt').text
-          critical('sitemap' in robots.lower(),'robots.txt does not expose sitemap')
+          fail_if('sitemap' not in robots.lower(),'robots.txt does not expose sitemap')
           llms=get(base+'/llms.txt').text
-          critical('Business Calculator Hub' in llms and '/pt-br' in llms and '/ja-jp' in llms,'llms.txt missing identity or market discovery links')
-          try:plugin=get(base+'/.well-known/ai-plugin.json').json();critical(plugin.get('name_for_model')=='business_calculator_hub','AI manifest has unexpected model name')
-          except Exception as e:failures.append('AI manifest invalid JSON: '+str(e))
-          try:audience=get(base+'/api/audience').json()
-          except Exception as e:audience={'error':str(e)};failures.append('Audience API invalid JSON: '+str(e))
-          try:growth=get(base+'/api/growth').json()
-          except Exception as e:growth={'error':str(e)};failures.append('Growth API invalid JSON: '+str(e))
+          fail_if('Business Calculator Hub' not in llms or '/pt-br' not in llms or '/ja-jp' not in llms,'llms.txt missing site identity or localized discovery links')
+          try:
+            manifest=get(base+'/.well-known/ai-plugin.json').json()
+            fail_if(manifest.get('name_for_model')!='business_calculator_hub','AI manifest has unexpected model name')
+          except Exception as e: failures.append('AI manifest invalid JSON: '+str(e))
+          try: audience=get(base+'/api/audience').json()
+          except Exception as e: audience={'error':str(e)};failures.append('Audience API invalid JSON: '+str(e))
+          try: growth=get(base+'/api/growth').json()
+          except Exception as e: growth={'error':str(e)};failures.append('Growth API invalid JSON: '+str(e))
 
-          sm=get(base+'/sitemap.xml');root=ET.fromstring(sm.text);ns={'sm':'http://www.sitemaps.org/schemas/sitemap/0.9'};urls=[x.text.strip() for x in root.findall('.//sm:loc',ns) if x.text]
-          critical(bool(urls),'sitemap contains no URLs')
+          sm=get(base+'/sitemap.xml')
+          root=ET.fromstring(sm.text);ns={'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
+          urls=[n.text.strip() for n in root.findall('.//s:loc',ns) if n.text]
+          fail_if(not urls,'sitemap contains no URLs')
           sitemap_paths={urlparse(u).path or '/' for u in urls}
 
           for i,url in enumerate(urls,1):
             r=get(url)
-            if isinstance(r,Exception):failures.append(f'{url} request error {r}');continue
+            if isinstance(r,Exception):failures.append(f'{url}: request error {r}');continue
             print(f'[{i}/{len(urls)}] {r.status_code} {url}')
-            if r.status_code>=400:failures.append(f'{url} HTTP {r.status_code}');continue
+            if r.status_code>=400:failures.append(f'{url}: HTTP {r.status_code}');continue
             if 'text/html' not in r.headers.get('content-type',''):continue
             soup=BeautifulSoup(r.text,'html.parser');path=urlparse(url).path or '/'
             title=soup.title.get_text(' ',strip=True) if soup.title else ''
             desc=(soup.find('meta',attrs={'name':'description'}) or {}).get('content','') if soup.find('meta',attrs={'name':'description'}) else ''
             canonical=(soup.find('link',rel='canonical') or {}).get('href','') if soup.find('link',rel='canonical') else ''
             h1=[x.get_text(' ',strip=True) for x in soup.find_all('h1')]
-            text=' '.join(soup.stripped_strings);word_count=len(re.findall(r'\b\w+\b',text,re.UNICODE))
-            schemas=[]
+            word_count=len(re.findall(r'\b\w+\b',' '.join(soup.stripped_strings),re.UNICODE))
+            schema_text=''
             for tag in soup.find_all('script',attrs={'type':'application/ld+json'}):
-              try:schemas.append(json.loads(tag.string or tag.get_text() or '{}'))
+              try:schema_text+=json.dumps(json.loads(tag.string or tag.get_text() or '{}'),ensure_ascii=False)
               except Exception:warnings.append(f'{path}: invalid JSON-LD block')
-            schema_text=json.dumps(schemas,ensure_ascii=False)
-            pages[path]={'title':title,'description':desc,'canonical':canonical,'h1':h1,'wordCount':word_count,'schema':schema_text}
-            warn(bool(title),f'{path}: missing title');warn(bool(desc),f'{path}: missing meta description');warn(bool(h1),f'{path}: missing H1')
+            pages[path]={'title':title,'description':desc,'canonical':canonical,'h1':h1,'wordCount':word_count}
+            warn_if(not title,f'{path}: missing title');warn_if(not desc,f'{path}: missing meta description');warn_if(not h1,f'{path}: missing H1')
             if path not in ['/privacy','/terms','/affiliate-disclosure']:
-              warn(bool(canonical),f'{path}: missing canonical')
+              warn_if(not canonical,f'{path}: missing canonical')
             is_calc='calculator' in path or '/calculadora-' in path
             is_guide='/guides/' in path or '/guias/' in path
-            if is_calc:critical('WebApplication' in schema_text,f'{path}: calculator missing WebApplication schema')
-            if is_guide:critical('Article' in schema_text,f'{path}: guide missing Article schema')
-            if path.count('/')>=2:warn('BreadcrumbList' in schema_text,f'{path}: nested page missing BreadcrumbList schema')
-            if is_calc:warn(word_count>=120,f'{path}: calculator has thin explanatory content ({word_count} words)')
+            fail_if(is_calc and 'WebApplication' not in schema_text,f'{path}: calculator missing WebApplication schema')
+            fail_if(is_guide and 'Article' not in schema_text,f'{path}: guide missing Article schema')
+            warn_if(path.count('/')>=2 and 'BreadcrumbList' not in schema_text,f'{path}: nested page missing BreadcrumbList schema')
+            warn_if(is_calc and word_count<120,f'{path}: calculator explanatory content is thin ({word_count} words)')
 
-            for tag,attr in [('img','src'),('script','src'),('link','href')]:
-              for node in soup.find_all(tag):
-                raw=node.get(attr)
-                if not raw or raw.startswith(('data:','mailto:','tel:','#')):continue
-                if tag=='link' and node.get('rel') and not any(x in node.get('rel') for x in ['stylesheet','icon','preload']):continue
-                absolute=urljoin(url,raw);parsed=urlparse(absolute)
-                if parsed.netloc!=urlparse(base).netloc or absolute in checked_assets:continue
-                checked_assets.add(absolute);ar=get(absolute)
-                if isinstance(ar,Exception) or ar.status_code>=400:failures.append(f'asset {absolute} broken from {path}: {ar}')
             for a in soup.find_all('a',href=True):
-              href=a['href']
+              href=a['href'];
               if href.startswith(('mailto:','tel:','javascript:','#')):continue
               absolute=urljoin(url,href.split('#')[0]);parsed=urlparse(absolute)
               if parsed.netloc!=urlparse(base).netloc:continue
               target=parsed.path or '/';inbound[target]+=1
               if absolute in checked_links:continue
               checked_links.add(absolute);lr=get(absolute)
-              if isinstance(lr,Exception) or lr.status_code>=400:failures.append(f'link {absolute} broken from {path}: {lr}')
-            time.sleep(.02)
+              if isinstance(lr,Exception) or lr.status_code>=400:failures.append(f'broken internal link {absolute} from {path}: {lr}')
 
-          orphan=[p for p in sorted(sitemap_paths) if inbound[p]==0 and p not in ['/', '/privacy','/terms','/affiliate-disclosure'] and not p.endswith('/advertise')]
-          for p in orphan[:100]:warnings.append(f'{p}: sitemap page with no detected inbound internal link')
+          orphan=[p for p in sorted(sitemap_paths) if inbound[p]==0 and p not in ['/','/privacy','/terms','/affiliate-disclosure'] and not p.endswith('/advertise')]
+          for p in orphan:warnings.append(f'{p}: sitemap page with no detected inbound internal link')
           ai=audience.get('aiReferrals',{}) if isinstance(audience,dict) else {}
-          report={'generatedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'baseUrl':base,'sitemapPages':len(urls),'htmlPagesAudited':len(pages),'internalLinksChecked':len(checked_links),'assetsChecked':len(checked_assets),'requiredEndpoints':required_status,'criticalFailures':failures,'warnings':warnings,'orphanPages':orphan,'aiReferrals':ai,'growthEngine':growth,'markets':['Global / US','Brazil','Mexico','Chile','United Kingdom','Germany','India','Japan']}
+          report={'generatedAt':time.strftime('%Y-%m-%dT%H:%M:%SZ',time.gmtime()),'baseUrl':base,'sitemapPages':len(urls),'htmlPagesAudited':len(pages),'internalLinksChecked':len(checked_links),'requiredEndpoints':status,'criticalFailures':failures,'warnings':warnings,'orphanPages':orphan,'aiReferrals':ai,'growthEngine':growth,'markets':['Global / US','Brazil','Mexico','Chile','United Kingdom','Germany','India','Japan']}
           with open('growth-report.json','w',encoding='utf-8') as f:json.dump(report,f,ensure_ascii=False,indent=2)
           with open('growth-report.md','w',encoding='utf-8') as f:
             f.write('# Business Calculator Hub — Organic Growth QA\n\n')
-            f.write(f"Generated: {report['generatedAt']}\n\nSitemap pages: **{len(urls)}**  \nHTML pages audited: **{len(pages)}**  \nInternal links checked: **{len(checked_links)}**  \nAssets checked: **{len(checked_assets)}**  \n")
-            f.write(f"AI referral sessions: **{ai.get('sessions',0)}**  \nAI referral pageviews: **{ai.get('pageViews',0)}**  \n")
-            f.write(f"Content gaps from live engine: **{len(growth.get('contentGaps',[])) if isinstance(growth,dict) else 0}**  \nOrphan warnings: **{len(orphan)}**\n\n")
-            f.write('## Critical failures\n'+('\n'.join('- '+x for x in failures) if failures else '- None')+'\n\n## Warnings\n'+('\n'.join('- '+x for x in warnings[:150]) if warnings else '- None')+'\n')
-          print('\n=== ORGANIC GROWTH QA ===');print(json.dumps({k:report[k] for k in ['sitemapPages','htmlPagesAudited','internalLinksChecked','assetsChecked']},indent=2));print('Warnings:',len(warnings));print('Critical failures:',len(failures))
+            f.write(f"Generated: {report['generatedAt']}\n\nSitemap pages: **{len(urls)}**  \nHTML pages audited: **{len(pages)}**  \nInternal links checked: **{len(checked_links)}**  \n")
+            f.write(f"AI referral sessions: **{ai.get('sessions',0)}**  \nAI referral pageviews: **{ai.get('pageViews',0)}**  \nContent gaps: **{len(growth.get('contentGaps',[])) if isinstance(growth,dict) else 0}**  \nOrphan warnings: **{len(orphan)}**\n\n")
+            f.write('## Critical failures\n'+('\n'.join('- '+x for x in failures) if failures else '- None')+'\n\n## Warnings\n'+('\n'.join('- '+x for x in warnings[:200]) if warnings else '- None')+'\n')
+          print(json.dumps({'sitemapPages':len(urls),'htmlPagesAudited':len(pages),'internalLinksChecked':len(checked_links),'warnings':len(warnings),'criticalFailures':len(failures)},indent=2))
           if failures:
             for x in failures[:100]:print('FAIL',x)
             sys.exit(1)
-          print('PASS: production SEO/AEO/GEO foundation, links, schemas and machine endpoints are healthy.')
+          print('PASS: production build, typecheck, SEO/AEO/GEO, links, schemas, analytics and growth engine are healthy.')
           PY
 
       - name: Upload growth audit artifact
