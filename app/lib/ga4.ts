@@ -15,45 +15,59 @@ async function token(){
   if(!t.token) throw new Error('Unable to obtain GA4 access token');
   return t.token;
 }
+
 async function post(path:string,body:any){
   const t=await token();
   const r=await fetch(api+path,{method:'POST',headers:{Authorization:'Bearer '+t,'Content-Type':'application/json'},body:JSON.stringify(body),cache:'no-store'});
   if(!r.ok) throw new Error('GA4 '+path+' failed: '+r.status+' '+await r.text());
   return r.json();
 }
-async function safeReport(body:any){
+
+async function safeReport(body:any,label:string){
   try{return await post(':runReport',body)}
-  catch(e){console.error('GA4 optional report failed',e);return {rows:[]}}
+  catch(e){console.error('GA4 optional report failed ['+label+']',e);return {rows:[]}}
 }
+
 const num=(v:any)=>Number(v?.value||v||0);
 const metric=(row:any,i:number)=>num(row?.metricValues?.[i]);
 const dim=(row:any,i:number)=>row?.dimensionValues?.[i]?.value||'';
 const growth=(now:number,prev:number)=>prev?Math.round((now-prev)/prev*1000)/10:(now?100:0);
 const metrics=[{name:'activeUsers'},{name:'sessions'},{name:'screenPageViews'}];
+const metricReport=(startDate:string,endDate:string)=>({dateRanges:[{startDate,endDate}],metrics});
 
 async function loadHistorical(){
-  const summary=await post(':runReport',{dateRanges:[
-      {startDate:'29daysAgo',endDate:'today',name:'monthly'},
-      {startDate:'6daysAgo',endDate:'today',name:'weekly'},
-      {startDate:'13daysAgo',endDate:'7daysAgo',name:'previousWeekly'},
-      {startDate:'2daysAgo',endDate:'today',name:'last3'},
-      {startDate:'5daysAgo',endDate:'3daysAgo',name:'previous3'}
-    ],metrics});
-  const [countries,content,daily,channels,sources]=await Promise.all([
-    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'country'}],metrics:[{name:'activeUsers'}],orderBys:[{metric:{metricName:'activeUsers'},desc:true}],limit:50}),
-    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'pagePath'},{name:'pageTitle'}],metrics:[{name:'screenPageViews'}],orderBys:[{metric:{metricName:'screenPageViews'},desc:true}],limit:25}),
-    safeReport({dateRanges:[{startDate:'13daysAgo',endDate:'today'}],dimensions:[{name:'date'}],metrics,orderBys:[{dimension:{dimensionName:'date'},desc:false}],limit:20}),
-    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionDefaultChannelGroup'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:20}),
-    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionSource'},{name:'sessionMedium'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:25})
+  // The monthly report is the health anchor. Comparisons and enrichment are isolated,
+  // so a single optional GA4 query cannot force the entire endpoint into fallback mode.
+  const monthlyReport=await post(':runReport',metricReport('29daysAgo','today'));
+
+  const [weeklyReport,previousWeeklyReport,last3Report,previous3Report,countries,content,daily,channels,sources]=await Promise.all([
+    safeReport(metricReport('6daysAgo','today'),'weekly'),
+    safeReport(metricReport('13daysAgo','7daysAgo'),'previousWeekly'),
+    safeReport(metricReport('2daysAgo','today'),'last3'),
+    safeReport(metricReport('5daysAgo','3daysAgo'),'previous3'),
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'country'}],metrics:[{name:'activeUsers'}],orderBys:[{metric:{metricName:'activeUsers'},desc:true}],limit:50},'countries'),
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'pagePath'},{name:'pageTitle'}],metrics:[{name:'screenPageViews'}],orderBys:[{metric:{metricName:'screenPageViews'},desc:true}],limit:25},'content'),
+    safeReport({dateRanges:[{startDate:'13daysAgo',endDate:'today'}],dimensions:[{name:'date'}],metrics,orderBys:[{dimension:{dimensionName:'date'},desc:false}],limit:20},'daily'),
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionDefaultChannelGroup'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:20},'channels'),
+    safeReport({dateRanges:[{startDate:'29daysAgo',endDate:'today'}],dimensions:[{name:'sessionSource'},{name:'sessionMedium'}],metrics,orderBys:[{metric:{metricName:'sessions'},desc:true}],limit:25},'sources')
   ]);
 
-  const rows=summary.rows||[];
-  const monthly=rows[0]||{},weekly=rows[1]||{},previousWeekly=rows[2]||{},last3=rows[3]||{},previous3=rows[4]||{};
+  const monthly=monthlyReport.rows?.[0]||{};
+  const weekly=weeklyReport.rows?.[0]||{};
+  const previousWeekly=previousWeeklyReport.rows?.[0]||{};
+  const last3=last3Report.rows?.[0]||{};
+  const previous3=previous3Report.rows?.[0]||{};
   const countryRows=countries.rows||[];
   const monthlyUsers=metric(monthly,0);
-  const topMarkets=countryRows.slice(0,8).map((r:any)=>({country:dim(r,0)||'Unknown',users:metric(r,0),share:monthlyUsers?Math.round(metric(r,0)/monthlyUsers*10000)/100:0}));
 
-  const seen=new Set<string>(); const topContent:any[]=[];
+  const topMarkets=countryRows.slice(0,8).map((r:any)=>({
+    country:dim(r,0)||'Unknown',
+    users:metric(r,0),
+    share:monthlyUsers?Math.round(metric(r,0)/monthlyUsers*10000)/100:0
+  }));
+
+  const seen=new Set<string>();
+  const topContent:any[]=[];
   for(const r of content.rows||[]){
     const path=dim(r,0)||'/';
     if(seen.has(path)||path.startsWith('/advertise'))continue;
@@ -63,25 +77,15 @@ async function loadHistorical(){
   }
 
   const dailyTrend=(daily.rows||[]).map((r:any)=>({
-    date:dim(r,0),
-    activeUsers:metric(r,0),
-    sessions:metric(r,1),
-    pageViews:metric(r,2)
+    date:dim(r,0),activeUsers:metric(r,0),sessions:metric(r,1),pageViews:metric(r,2)
   }));
 
   const trafficChannels=(channels.rows||[]).map((r:any)=>({
-    channel:dim(r,0)||'Unassigned',
-    activeUsers:metric(r,0),
-    sessions:metric(r,1),
-    pageViews:metric(r,2)
+    channel:dim(r,0)||'Unassigned',activeUsers:metric(r,0),sessions:metric(r,1),pageViews:metric(r,2)
   }));
 
   const sourceMedium=(sources.rows||[]).map((r:any)=>({
-    source:dim(r,0)||'(direct)',
-    medium:dim(r,1)||'(none)',
-    activeUsers:metric(r,0),
-    sessions:metric(r,1),
-    pageViews:metric(r,2)
+    source:dim(r,0)||'(direct)',medium:dim(r,1)||'(none)',activeUsers:metric(r,0),sessions:metric(r,1),pageViews:metric(r,2)
   }));
 
   const organic=trafficChannels.find((x:any)=>x.channel==='Organic Search')||{activeUsers:0,sessions:0,pageViews:0};
@@ -118,22 +122,21 @@ async function loadHistorical(){
     topContent
   };
 }
+
 async function loadRealtime(){
   const r=await post(':runRealtimeReport',{minuteRanges:[{startMinutesAgo:29,endMinutesAgo:0}],metrics:[{name:'activeUsers'}]});
   return metric(r.rows?.[0],0);
 }
-const cachedHistorical=unstable_cache(loadHistorical,['ga4-audience-v3'],{revalidate:900});
-const cachedRealtime=unstable_cache(loadRealtime,['ga4-realtime-v3'],{revalidate:60});
+
+const cachedHistorical=unstable_cache(loadHistorical,['ga4-audience-v4'],{revalidate:900});
+const cachedRealtime=unstable_cache(loadRealtime,['ga4-realtime-v4'],{revalidate:60});
 
 export async function getAudienceData(){
   try{
     const data=await cachedHistorical();
     let liveNow:null|number=null;
-    try{
-      liveNow=await cachedRealtime();
-    }catch(e){
-      console.error('GA4 realtime query failed; historical audience remains available',e);
-    }
+    try{liveNow=await cachedRealtime()}
+    catch(e){console.error('GA4 realtime query failed; historical audience remains available',e)}
     return {...data,liveNow};
   }catch(e){
     console.error('GA4 historical audience fallback',e);
