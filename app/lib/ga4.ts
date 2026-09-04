@@ -122,15 +122,21 @@ async function loadRealtime(){
   const r=await post(':runRealtimeReport',{minuteRanges:[{startMinutesAgo:29,endMinutesAgo:0}],metrics:[{name:'activeUsers'}]});
   return metric(r.rows?.[0],0);
 }
-const cachedHistorical=unstable_cache(loadHistorical,['ga4-audience-v2'],{revalidate:900});
-const cachedRealtime=unstable_cache(loadRealtime,['ga4-realtime-v2'],{revalidate:60});
+const cachedHistorical=unstable_cache(loadHistorical,['ga4-audience-v3'],{revalidate:900});
+const cachedRealtime=unstable_cache(loadRealtime,['ga4-realtime-v3'],{revalidate:60});
 
 export async function getAudienceData(){
   try{
-    const [data,liveNow]=await Promise.all([cachedHistorical(),cachedRealtime()]);
+    const data=await cachedHistorical();
+    let liveNow:null|number=null;
+    try{
+      liveNow=await cachedRealtime();
+    }catch(e){
+      console.error('GA4 realtime query failed; historical audience remains available',e);
+    }
     return {...data,liveNow};
   }catch(e){
-    console.error('GA4 live audience fallback',e);
-    return {...audienceSnapshot,liveNow:null,source:'Google Analytics 4 · fallback snapshot',error:'Live GA4 query failed'};
+    console.error('GA4 historical audience fallback',e);
+    return {...audienceSnapshot,liveNow:null,source:'Google Analytics 4 · fallback snapshot',error:'Historical GA4 query failed'};
   }
 }
