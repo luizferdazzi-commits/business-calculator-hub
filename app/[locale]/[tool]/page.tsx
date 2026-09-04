@@ -2,6 +2,7 @@ import {notFound} from 'next/navigation';
 import type {Metadata} from 'next';
 import LocalizedCalculator from '../../components/LocalizedCalculator';
 import CalculatorAeoContent from '../../components/CalculatorAeoContent';
+import GrowthGuideLinks from '../../components/GrowthGuideLinks';
 
 const locales=['pt-br','es-mx','es-cl','de-de','en-in','ja-jp','en-gb'] as const;
 const toolSlugs=['freelance-rate-calculator','roi-calculator','salary-to-hourly-calculator','markup-calculator','break-even-calculator','payback-period-calculator','cac-ltv-calculator','runway-calculator','selling-price-calculator','discount-margin-calculator','fixed-project-price-calculator','project-hourly-rate-calculator','freelance-vs-salary-calculator'];
@@ -36,5 +37,5 @@ export async function generateMetadata({params}:{params:Promise<{locale:string,t
 export default async function Page({params}:{params:Promise<{locale:string,tool:string}>}){
  const {locale,tool}=await params;
  if(!locales.includes(locale as any)||!toolSlugs.includes(tool))notFound();
- return <><LocalizedCalculator locale={locale as any} tool={tool}/><CalculatorAeoContent locale={locale as any} tool={tool}/></>;
+ return <><LocalizedCalculator locale={locale as any} tool={tool}/><CalculatorAeoContent locale={locale as any} tool={tool}/><GrowthGuideLinks locale={locale}/></>;
 }
