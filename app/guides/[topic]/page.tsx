@@ -1,0 +1,4 @@
+import {notFound} from 'next/navigation';import type{Metadata}from'next';import{getGrowthGuide,GrowthGuidePage}from'../../components/GrowthGuide';
+const topics=['marketing-roi-formula','google-ads-roi'];export function generateStaticParams(){return topics.map(topic=>({topic}))}
+export async function generateMetadata({params}:{params:Promise<{topic:string}>}):Promise<Metadata>{const{topic}=await params;const g=getGrowthGuide('en:'+topic);if(!g)return{};return{title:g.title,description:g.description,alternates:{canonical:`/guides/${topic}`},openGraph:{title:g.title,description:g.description,url:`/guides/${topic}`,type:'article'}}}
+export default async function Page({params}:{params:Promise<{topic:string}>}){const{topic}=await params;if(!topics.includes(topic))notFound();const g=getGrowthGuide('en:'+topic);if(!g)notFound();return <GrowthGuidePage guide={g} prefix="/guides"/>}
