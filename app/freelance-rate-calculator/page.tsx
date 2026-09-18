@@ -6,7 +6,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 declare global { interface Window { gtag?: (...args: any[]) => void } }
 
 const RIIBASE_AFFILIATE_URL='https://riibase.pxf.io/4aMza3';
-// Production CTA: Riibase affiliate offer for freelance calculator users.
 
 export default function FreelanceRateCalculator(){
   const [income,setIncome]=useState('80000');
@@ -16,6 +15,7 @@ export default function FreelanceRateCalculator(){
   const [weeks,setWeeks]=useState('48');
   const [billable,setBillable]=useState('65');
   const [buffer,setBuffer]=useState('15');
+  const [shareStatus,setShareStatus]=useState('');
   const firstRender=useRef(true);
 
   const result=useMemo(()=>{
@@ -36,15 +36,12 @@ export default function FreelanceRateCalculator(){
   useEffect(()=>{
     if(firstRender.current){ firstRender.current=false; return; }
     const timer=window.setTimeout(()=>{
-      const params={
+      window.gtag?.('event','calculator_completed',{
         calculator_name:'freelance_rate',
         page_path:window.location.pathname,
         recommended_rate:Number(result.recommended.toFixed(2)),
-        debug_mode:true,
         transport_type:'beacon'
-      };
-      window.gtag?.('event','calculator_completed',params);
-      console.info('[GA4] calculator_completed',params);
+      });
     },900);
     return()=>window.clearTimeout(timer);
   },[income,expenses,taxRate,hours,weeks,billable,buffer,result.recommended]);
@@ -60,9 +57,32 @@ export default function FreelanceRateCalculator(){
 
   const money=(n:number)=>n.toLocaleString('en-US',{style:'currency',currency:'USD',maximumFractionDigits:2});
   const number=(n:number)=>n.toLocaleString('en-US',{maximumFractionDigits:0});
+  const resultText=()=>`My freelance pricing baseline: ${money(result.minimum)}/hr minimum, ${money(result.recommended)}/hr recommended, and ${money(result.day)} for an 8-hour day. Calculated with Business Calculator Hub.`;
+
+  const copyResult=async()=>{
+    try{
+      await navigator.clipboard.writeText(resultText()+' '+window.location.href);
+      setShareStatus('Result copied');
+      window.gtag?.('event','share_result',{calculator_name:'freelance_rate',method:'copy'});
+    }catch{setShareStatus('Copy failed');}
+  };
+
+  const shareResult=async()=>{
+    const text=resultText();
+    try{
+      if(navigator.share){
+        await navigator.share({title:'My freelance rate',text,url:window.location.href});
+        setShareStatus('Shared');
+        window.gtag?.('event','share_result',{calculator_name:'freelance_rate',method:'native'});
+      }else{
+        await copyResult();
+      }
+    }catch(e:any){
+      if(e?.name!=='AbortError') setShareStatus('Share cancelled');
+    }
+  };
 
   return <main className="shell">
-    
     <section className="calculator">
       <p className="eyebrow">FREELANCE PRICING TOOL</p>
       <h1>Freelance Rate Calculator</h1>
@@ -86,17 +106,13 @@ export default function FreelanceRateCalculator(){
             <div><span>Monthly revenue target</span><strong>{money(result.month)}</strong></div>
           </div>
           <p style={{marginTop:24,color:'#666',lineHeight:1.6}}>Estimated annual revenue needed: <strong>{money(result.target)}</strong><br/>Estimated billable hours per year: <strong>{number(result.billableHours)}</strong></p>
-          <Link className="primary full" href="/salary-to-hourly-calculator">Compare with salary pay →</Link>
-          <a
-            className="primary full"
-            href={RIIBASE_AFFILIATE_URL}
-            target="_blank"
-            rel="sponsored noopener noreferrer"
-            onClick={trackAffiliateClick}
-            style={{marginTop:12}}
-          >
-            Manage your freelance business with Riibase →
-          </a>
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginTop:18}}>
+            <button className="primary" type="button" onClick={copyResult}>Copy result</button>
+            <button className="primary" type="button" onClick={shareResult}>Share result</button>
+          </div>
+          {shareStatus&&<p aria-live="polite" style={{margin:'8px 0 0',fontSize:13,color:'#555'}}>{shareStatus}</p>}
+          <Link className="primary full" href="/fixed-project-price-calculator" style={{marginTop:12}}>Turn this rate into a project price →</Link>
+          <a className="primary full" href={RIIBASE_AFFILIATE_URL} target="_blank" rel="sponsored noopener noreferrer" onClick={trackAffiliateClick} style={{marginTop:12}}>Manage your freelance business with Riibase →</a>
           <p style={{marginTop:10,fontSize:12,color:'#777',lineHeight:1.5}}>Affiliate link. We may earn a commission if you sign up through this link, at no extra cost to you.</p>
         </div>
       </div>
@@ -106,8 +122,9 @@ export default function FreelanceRateCalculator(){
       <p>The calculator starts with your desired annual take-home income, adds annual business expenses, adjusts for estimated taxes and divides the required revenue by your realistic billable hours. A buffer is then added to create a more sustainable recommended rate.</p>
       <h2>Why billable time matters</h2>
       <p>Freelancers rarely bill every working hour. Sales, administration, meetings, proposals, accounting and downtime all reduce billable capacity. Using a realistic billable percentage helps avoid underpricing.</p>
-      <h2>Use the minimum rate carefully</h2>
-      <p>The minimum rate is a baseline, not a promise of profitability. Your market, skill level, demand, software costs, payment fees and risk should also influence your final price.</p>
+      <h2>From hourly rate to a client quote</h2>
+      <p>Your hourly baseline is a decision tool, not a rule. Use it to test whether a project price can cover the time, risk and overhead required. Then compare the result with a fixed-fee quote before sending a proposal.</p>
+      <div className="relatedBox"><strong>Next pricing decisions</strong><div className="relatedLinks"><Link href="/fixed-project-price-calculator">Price a fixed-fee project →</Link><Link href="/project-hourly-rate-calculator">Check project hourly value →</Link><Link href="/guides/how-much-should-i-charge-as-a-freelancer">Read the pricing guide →</Link><Link href="/freelance-vs-salary-calculator">Compare freelance vs salary →</Link></div></div>
     </section>
   </main>;
 }
