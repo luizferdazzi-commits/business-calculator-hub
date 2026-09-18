@@ -3,6 +3,8 @@ name: Daily Organic Growth QA
 on:
   push:
     branches: [main]
+  pull_request:
+    branches: [main]
   schedule:
     - cron: '20 10 * * *'
   workflow_dispatch:
@@ -30,9 +32,11 @@ jobs:
           npx tsc --noEmit
 
       - name: Install audit dependencies
+        if: github.event_name != 'pull_request'
         run: python -m pip install --disable-pip-version-check requests beautifulsoup4
 
       - name: Run SEO AEO GEO and growth audit
+        if: github.event_name != 'pull_request'
         env:
           BASE_URL: https://business-calculator-hub.vercel.app
         run: |
@@ -132,7 +136,7 @@ jobs:
           PY
 
       - name: Upload growth audit artifact
-        if: always()
+        if: github.event_name != 'pull_request' && always()
         uses: actions/upload-artifact@v4
         with:
           name: organic-growth-audit
