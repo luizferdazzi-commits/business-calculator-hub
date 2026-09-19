@@ -13,8 +13,8 @@ export default async function AdvertisePage(){
         <section className="hero heroCompact advertiseHero">
       <p className="eyebrow">ADVERTISE WITH US</p>
       <h1>Reach people while they are making business decisions.</h1>
-      <p className="lead">Business Calculator Hub helps freelancers, entrepreneurs and small businesses make pricing, compensation, profitability and investment decisions. We offer relevant, clearly labeled sponsorship opportunities for brands that serve this audience.</p>
-      <div className="heroActions"><a className="primary" href="#plans">View plans & placements ↓</a><a className="secondary" href="mailto:contato@assessorialf.com.br?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
+      <p className="lead">Business Calculator Hub is concentrating acquisition around freelancers, consultants and small service businesses making pricing, compensation, profitability and operating decisions. We offer relevant, clearly labeled sponsorship opportunities for brands that serve this audience.</p>
+      <div className="heroActions"><a className="primary" href="#plans">View plans & placements ↓</a><Link className="secondary" href="/partners/sponsor-proof">See live sponsor proof</Link><a className="secondary" href="mailto:contato@assessorialf.com.br?subject=Advertising%20inquiry%20-%20Business%20Calculator%20Hub">Email advertising inquiry</a></div>
     </section>
     <AdvertisingPlans lang="en" contact="#proposal"/>
 
