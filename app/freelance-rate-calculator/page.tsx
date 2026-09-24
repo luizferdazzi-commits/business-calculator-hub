@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import MozGrowthCTA from '../components/MozGrowthCTA';
 
 declare global { interface Window { gtag?: (...args: any[]) => void } }
 
@@ -117,6 +118,7 @@ export default function FreelanceRateCalculator(){
         </div>
       </div>
     </section>
+    <MozGrowthCTA placement="freelance_rate_after_calculator" headline="You know what to charge. Now help more clients find you." />
     <section className="content">
       <h2>How this freelance rate is calculated</h2>
       <p>The calculator starts with your desired annual take-home income, adds annual business expenses, adjusts for estimated taxes and divides the required revenue by your realistic billable hours. A buffer is then added to create a more sustainable recommended rate.</p>
