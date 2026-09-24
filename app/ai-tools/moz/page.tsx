@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import TrackedOutboundLink from '../../components/TrackedOutboundLink';
-import {MOZ_AFFILIATE_URL} from '../../components/MozGrowthCTA';
+const MOZ_AFFILIATE_URL='https://moz.pxf.io/gRQm1B';
 
 export const metadata: Metadata = {
   title: 'Moz Pro: SEO + AI Visibility for Small Business | Business Calculator Hub',
