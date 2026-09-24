@@ -10,6 +10,7 @@ const cards=[
 ['/freelance-vs-salary-calculator','↔','Freelance vs Salary Calculator','Compare independent work with salaried compensation'],
 ['/salary-to-hourly-calculator','◉','Salary to Hourly Calculator','Convert annual salary to an hourly equivalent'],
 ['/profit-margin-calculator','%','Profit Margin Calculator','Protect margin before quoting a client'],
+['/seo-roi-calculator','SEO','SEO ROI Calculator','Connect SEO investment to organic leads, customers and revenue'],
 ['/markup-calculator','▦','Markup Calculator','Build a selling price from cost and markup'],
 ['/break-even-calculator','◔','Break-Even Calculator','Know how much work or revenue you need to break even']
 ];
