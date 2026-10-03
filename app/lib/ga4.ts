@@ -52,7 +52,7 @@ async function loadHistorical(){
   const topMarkets=countryRows.slice(0,8).map((r:any)=>({country:dim(r,0)||'Unknown',users:metric(r,0),share:monthlyUsers?Math.round(metric(r,0)/monthlyUsers*10000)/100:0}));
 
   const seen=new Set<string>();const topContent:any[]=[];
-  for(const r of content.rows||[]){const path=dim(r,0)||'/';if(seen.has(path)||path.startsWith('/advertise'))continue;seen.add(path);topContent.push({path,label:dim(r,1)||path,views:metric(r,0)});if(topContent.length===15)break;}
+  for(const r of content.rows||[]){const path=dim(r,0)||'/';const label=dim(r,1)||path;const is404=label.toLowerCase().includes('404')||label.toLowerCase().includes('page could not be found');if(seen.has(path)||path.startsWith('/advertise')||is404)continue;seen.add(path);topContent.push({path,label,views:metric(r,0)});if(topContent.length===15)break;}
   const dailyTrend=(daily.rows||[]).map((r:any)=>({date:dim(r,0),activeUsers:metric(r,0),sessions:metric(r,1),pageViews:metric(r,2)}));
   const trafficChannels=(channels.rows||[]).map((r:any)=>({channel:dim(r,0)||'Unassigned',activeUsers:metric(r,0),sessions:metric(r,1),pageViews:metric(r,2)}));
   const sourceMedium=(sources.rows||[]).map((r:any)=>({source:dim(r,0)||'(direct)',medium:dim(r,1)||'(none)',activeUsers:metric(r,0),sessions:metric(r,1),pageViews:metric(r,2)}));
